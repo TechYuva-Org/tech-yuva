@@ -259,13 +259,15 @@ export default function App() {
             ) : (
               <button onClick={handleLogout} className="text-xs font-bold uppercase text-red-400/70 hover:text-red-400 px-3 cursor-pointer">Logout</button>
             )}
-            <button
-              onClick={() => scrollToSection(mainJoinRef)}
+            <a
+              href="https://chat.whatsapp.com/EARK4FcxQn0EW987zH9I08"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-5 py-2 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 text-white text-[11px] font-black uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] hover:bg-[#1E90FF]/30 transition-all cursor-pointer"
               id="header-join-cta"
             >
               JOIN COMMUNITY
-            </button>
+            </a>
           </div>
 
         </div>
