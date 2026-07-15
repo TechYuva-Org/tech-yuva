@@ -1,0 +1,6 @@
+{
+  "name": "Tech Yuva",
+  "description": "Tech Yuva is a premium student-led technology community focused on hackathons, workshops, and building future developers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
