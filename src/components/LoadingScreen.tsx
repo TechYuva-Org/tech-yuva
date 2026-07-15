@@ -36,15 +36,13 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     setPhase("fadeout");
     setTimeout(() => {
       setPhase("done");
-      sessionStorage.setItem("ty_loading_shown", "1");
       onComplete();
     }, 800); // Wait for CSS opacity transition
   }, [onComplete]);
 
-  // Initial Check (sessionStorage & prefers-reduced-motion)
+  // Initial Check (prefers-reduced-motion)
   useEffect(() => {
-    if (sessionStorage.getItem("ty_loading_shown") === "1" || 
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("done");
       onComplete();
       return;
