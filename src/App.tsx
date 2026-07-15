@@ -192,7 +192,7 @@ export default function App() {
   return (
     <>
     <LoadingScreen onComplete={() => setLoadingDone(true)} />
-    <div className={`min-h-screen bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
+    <div className={`min-h-screen bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
       {cmsData?.announcements && cmsData.announcements.filter((ann: any) => ann.enabled).map((ann: any) => {
@@ -272,7 +272,7 @@ export default function App() {
       </header>
 
       {/* MAIN CONTAINER CONTENT SPREAD */}
-      <main className="max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-hidden">
+      <main className="max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-x-hidden">
         
         {/* SECTION 1: HERO CONTAINER SCREEN */}
         <motion.section 

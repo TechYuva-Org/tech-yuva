@@ -23,7 +23,7 @@ export default function HeroTerminal({ onOpenSpecs, onScrollToEvents, cmsHero }:
   const badgeText = cmsHero?.badge || "ADMISSION OPEN • NEW COHORT 2026";
   const subtitleText = cmsHero?.subtitle || "Where Youth Meet To Build Future Tech.";
   const descriptionText = cmsHero?.description || "Empowering the next generation of builders through AI, Web3, and high-performance startup culture.";
-  const button1Text = cmsHero?.ctaButton1Text || "EXPLORE WORKSHOPS";
+  const button1Text = cmsHero?.ctaButton1Text || "JOIN COMMUNITY";
   const button2Text = cmsHero?.ctaButton2Text || "VIEW STATS & SPECS";
 
   const fullCodeText = cmsHero?.terminalCode || `const future = {
@@ -128,15 +128,16 @@ console.log("Your journey starts here 🚀");`;
 
         {/* Action button rows */}
         <div className="flex flex-col sm:flex-row gap-4 pt-2">
-          <button
-            type="button"
-            onClick={onScrollToEvents}
+          <a
+            href="https://chat.whatsapp.com/EARK4FcxQn0EW987zH9I08"
+            target="_blank"
+            rel="noopener noreferrer"
             className="h-12 px-8 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 text-white font-bold uppercase text-xs tracking-widest rounded-lg shadow-[0_0_20px_rgba(30,144,255,0.3)] hover:bg-[#1E90FF]/30 hover:shadow-[0_0_30px_rgba(30,144,255,0.4)] active:scale-[0.98] transition-all cursor-pointer text-center flex items-center justify-center gap-2"
             id="hero-explore-cta"
           >
             {button1Text}
             <span className="font-mono text-xs">→</span>
-          </button>
+          </a>
           
           <button
             type="button"
