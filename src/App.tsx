@@ -192,7 +192,7 @@ export default function App() {
   return (
     <>
     <LoadingScreen onComplete={() => setLoadingDone(true)} />
-    <div className={`min-h-screen bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
+    <div className={`min-h-screen flex flex-col bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
       {cmsData?.announcements && cmsData.announcements.filter((ann: any) => ann.enabled).map((ann: any) => {
@@ -272,7 +272,7 @@ export default function App() {
       </header>
 
       {/* MAIN CONTAINER CONTENT SPREAD */}
-      <main className="max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-x-hidden">
+      <main className="flex-1 w-full max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-x-hidden">
         
         {/* SECTION 1: HERO CONTAINER SCREEN */}
         <motion.section 
@@ -1173,7 +1173,7 @@ export default function App() {
       </section>
 
       {/* SECTION 12: PROFESSIONAL FOOTER BAR */}
-      <footer className="border-t border-border-color bg-footer-bg py-12 px-6 font-mono text-xs text-text-secondary">
+      <footer className="mt-auto border-t border-border-color bg-footer-bg py-12 px-6 font-mono text-xs text-text-secondary">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-border-color">
           
           <div className="space-y-3 md:col-span-1">
