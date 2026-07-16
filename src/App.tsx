@@ -192,7 +192,7 @@ export default function App() {
   return (
     <>
     <LoadingScreen onComplete={() => setLoadingDone(true)} />
-    <div className={`min-h-[100dvh] bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
+    <div className={`min-h-[100dvh] bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
       {cmsData?.announcements && cmsData.announcements.filter((ann: any) => ann.enabled).map((ann: any) => {
@@ -274,7 +274,7 @@ export default function App() {
       </header>
 
       {/* MAIN CONTAINER CONTENT SPREAD */}
-      <main className="w-full max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-x-hidden">
+      <main className="w-full max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24">
         
         {/* SECTION 1: HERO CONTAINER SCREEN */}
         <motion.section 
@@ -1224,7 +1224,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px]">
           <p>© 2026 Tech Yuva Guild Council. All rights secured internationally.</p>
           <div className="flex items-center gap-4 text-text-secondary">
-            <a href="https://www.instagram.com/techyuva_/" target="_blank" rel="noreferrer" className="hover:text-text-primary transition-colors flex items-center gap-1"><Instagram className="w-3.5 h-3.5" /> instagram</a>
+            <a href="https://www.instagram.com/techyuva_/" target="_blank" rel="noreferrer" className="hover:text-text-primary transition-colors flex items-center gap-1"><Instagram className="w-3.5 h-3.5" /> Follow us on Instagram</a>
             <span className="text-border-color">|</span>
             <a href="https://github.com" className="hover:text-text-primary transition-colors flex items-center gap-1"><Github className="w-3.5 h-3.5" /> github</a>
             <span className="text-border-color">|</span>
