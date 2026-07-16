@@ -218,7 +218,7 @@ export default function App() {
 
       {/* Background Atmosphere */}
       <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#1E90FF]/10 rounded-full blur-[120px] pointer-events-none z-0" />
-      <div className="absolute bottom-[-5%] left-[-5%] w-[400px] h-[400px] bg-[#FF7A00]/5 rounded-full blur-[100px] pointer-events-none z-0" />
+      <div className="absolute top-[80%] left-[-5%] w-[400px] h-[400px] bg-[#FF7A00]/5 rounded-full blur-[100px] pointer-events-none z-0" />
       
       {/* SECTION 0: IMMERSIVE THEME HEADER RAIL */}
       <header className="sticky top-0 z-40 bg-[#0A0A0A]/60 backdrop-blur-xl backdrop-saturate-150 border-b border-white/[0.06] px-6 md:px-10 py-5 shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
