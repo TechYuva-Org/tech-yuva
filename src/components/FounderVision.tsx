@@ -11,7 +11,7 @@ export default function FounderVision({ cmsFounder }: FounderVisionProps) {
 
   // Derive dynamic details
   const name = cmsFounder?.name || "Lakshay Soni";
-  const role = cmsFounder?.role || "Visionary Council Lead, Class of 2026";
+  const role = cmsFounder?.role || "Visionary, Founder Tech Yuva";
   const titleText = cmsFounder?.quote || cmsFounder?.title || "FROM HELLO-WORLD TO SYSTEM ARCHITECTS";
   const bioText = cmsFounder?.biography || cmsFounder?.bio || "I observed hundreds of brilliant young developers stuck in tutorial hell, spending hours building identical generic todo apps with zero actual production launch exposure. Tech Yuva was created to smash those constraints. We don't teach. We deploy alongside you.";
   const avatarUrl = cmsFounder?.photo || cmsFounder?.avatarUrl || "/founder-photo.jpg";

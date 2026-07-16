@@ -192,7 +192,7 @@ export default function App() {
   return (
     <>
     <LoadingScreen onComplete={() => setLoadingDone(true)} />
-    <div className={`min-h-screen flex flex-col bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
+    <div className={`min-h-[100dvh] flex flex-col bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
       {cmsData?.announcements && cmsData.announcements.filter((ann: any) => ann.enabled).map((ann: any) => {
@@ -507,9 +507,9 @@ export default function App() {
                     <Terminal className="w-5 h-5" />
                   </div>
                   <div className="space-y-2 mt-4">
-                    <h3 className="text-base font-display uppercase font-bold text-text-primary">API Workshops</h3>
+                    <h3 className="text-base font-display uppercase font-bold text-text-primary">Systems Engineering</h3>
                     <p className="text-xs text-secondary-text leading-relaxed">
-                      No empty theory. We write live server logic and compile files directly on host port levels to see code run.
+                      No empty theory. We architect production-grade backends, build scalable APIs, and deploy active systems directly to the cloud.
                     </p>
                   </div>
                 </div>
@@ -1211,7 +1211,7 @@ export default function App() {
             <h5 className="text-[11px] font-bold text-text-primary uppercase tracking-wider">Primary Reach Office</h5>
             <p className="text-[11px] text-text-secondary">
               Lead Architect Seat:<br />
-              dakshchaudhary2668@gmail.com
+              techyuva.org@gmail.com
             </p>
             <p className="text-[11px] text-text-secondary">
               Community Sync:<br />
