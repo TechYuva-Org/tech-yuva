@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { 
   Users, Terminal, Cpu, Award, Code2, Presentation, Calendar, 
-  ChevronRight, ArrowRight, Github, Send, Star, Shield, Info, Heart, Layout, Globe
+  ChevronRight, ArrowRight, Github, Send, Star, Shield, Info, Heart, Layout, Globe, Instagram
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -192,7 +192,7 @@ export default function App() {
   return (
     <>
     <LoadingScreen onComplete={() => setLoadingDone(true)} />
-    <div className={`min-h-[100dvh] flex flex-col bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
+    <div className={`min-h-[100dvh] bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none overflow-x-hidden ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
       {cmsData?.announcements && cmsData.announcements.filter((ann: any) => ann.enabled).map((ann: any) => {
@@ -274,7 +274,7 @@ export default function App() {
       </header>
 
       {/* MAIN CONTAINER CONTENT SPREAD */}
-      <main className="flex-1 w-full max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-x-hidden">
+      <main className="w-full max-w-7xl mx-auto space-y-24 md:space-y-36 pb-24 overflow-x-hidden">
         
         {/* SECTION 1: HERO CONTAINER SCREEN */}
         <motion.section 
@@ -1175,7 +1175,7 @@ export default function App() {
       </section>
 
       {/* SECTION 12: PROFESSIONAL FOOTER BAR */}
-      <footer className="mt-auto border-t border-border-color bg-footer-bg py-12 px-6 font-mono text-xs text-text-secondary">
+      <footer className="border-t border-border-color bg-footer-bg py-12 px-6 font-mono text-xs text-text-secondary w-full">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-border-color">
           
           <div className="space-y-3 md:col-span-1">
@@ -1224,6 +1224,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px]">
           <p>© 2026 Tech Yuva Guild Council. All rights secured internationally.</p>
           <div className="flex items-center gap-4 text-text-secondary">
+            <a href="https://www.instagram.com/techyuva_/" target="_blank" rel="noreferrer" className="hover:text-text-primary transition-colors flex items-center gap-1"><Instagram className="w-3.5 h-3.5" /> instagram</a>
+            <span className="text-border-color">|</span>
             <a href="https://github.com" className="hover:text-text-primary transition-colors flex items-center gap-1"><Github className="w-3.5 h-3.5" /> github</a>
             <span className="text-border-color">|</span>
             <span className="flex items-center gap-1 text-neon-blue"><Globe className="w-3 h-3 text-neon-blue" /> region-in-3000</span>
