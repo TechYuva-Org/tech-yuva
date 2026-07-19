@@ -1170,7 +1170,7 @@ export default function App() {
         <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Community Partners Card */}
           <a
-            href="COMMUNITY_PARTNERS_GOOGLE_FORM_URL"
+            href="https://forms.gle/RxyjcnHoYebZxh5JA"
             target="_blank"
             rel="noopener noreferrer"
             className="group relative p-8 rounded-2xl bg-[#0A0A0A]/60 backdrop-blur-xl border border-white/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:border-[#1E90FF]/30 hover:shadow-[0_8px_40px_rgba(30,144,255,0.1)] transition-all duration-300 text-center space-y-4 cursor-pointer"
