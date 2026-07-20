@@ -11,6 +11,7 @@ export interface EventItem {
   status: "upcoming" | "past";
   spotsLeft?: number;
   featured?: boolean;
+  externalLink?: string;
 }
 
 export interface GalleryItem {

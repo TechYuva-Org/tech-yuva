@@ -688,13 +688,24 @@ export default function App() {
                       <div className="font-mono text-[10px] text-secondary-text">
                         Seats Remaining: <span className="text-saffron font-bold text-xs">{evt.spotsLeft !== undefined ? evt.spotsLeft : 25}</span>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedEventForReg(evt)}
-                        className="px-4 py-1.5 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer"
-                      >
-                        SECURE PASS
-                      </button>
+                      {evt.externalLink ? (
+                        <a
+                          href={evt.externalLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-1.5 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer inline-block text-center"
+                        >
+                          SECURE PASS
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedEventForReg(evt)}
+                          className="px-4 py-1.5 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer"
+                        >
+                          SECURE PASS
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
