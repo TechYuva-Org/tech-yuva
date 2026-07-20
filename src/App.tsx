@@ -44,7 +44,8 @@ export default function App() {
     queryFn: async () => {
       const res = await fetch(`/api/events?t=${Date.now()}`, { cache: "no-store" });
       if (res.ok) {
-        return await res.json();
+        const data = await res.json();
+        return data.length > 0 ? data : UPCOMING_EVENTS;
       }
       return UPCOMING_EVENTS;
     },

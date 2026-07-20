@@ -1,6 +1,21 @@
 import { EventItem, GalleryItem, Sponsor, Testimonial } from "./types";
 
-export const UPCOMING_EVENTS: EventItem[] = [];
+export const UPCOMING_EVENTS: EventItem[] = [
+  {
+    id: "drop-hack-26",
+    title: "DROP HACK'26",
+    category: "hackathon",
+    date: "2026-08-29",
+    rawDate: "August 29, 2026",
+    time: "10 Hours",
+    venue: "Partner Event (Unstop)",
+    tags: ["AI", "Web3", "Cyber Security", "FinTech", "Healthcare"],
+    description: "Tech Yuva is excited to announce that we're the Official Community Partner for DROP HACK'26! Compete with some of the brightest minds for a ₹50,000+ Prize Pool. Perks include Certificates, Goodies, and Merch.",
+    status: "upcoming",
+    externalLink: "https://unstop.com/hackathons/drophack-siec-community-1701822?lb=e14Q58g&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Manav04mahawar",
+    featured: true
+  }
+];
 
 export const PAST_EVENTS: EventItem[] = [];
 
