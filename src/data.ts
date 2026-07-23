@@ -13,7 +13,8 @@ export const UPCOMING_EVENTS: EventItem[] = [
     description: "Tech Yuva is excited to announce that we're the Official Community Partner for DROP HACK'26! Compete with some of the brightest minds for a ₹50,000+ Prize Pool. Perks include Certificates, Goodies, and Merch.",
     status: "upcoming",
     externalLink: "https://unstop.com/hackathons/drophack-siec-community-1701822?lb=e14Q58g&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Manav04mahawar",
-    featured: true
+    featured: true,
+    image: "/drophack-poster.png"
   }
 ];
 

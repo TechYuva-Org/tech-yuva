@@ -12,6 +12,7 @@ export interface EventItem {
   spotsLeft?: number;
   featured?: boolean;
   externalLink?: string;
+  image?: string;
 }
 
 export interface GalleryItem {

@@ -46,6 +46,7 @@ export const events = pgTable("events", {
   description: text("description").notNull(),
   status: text("status").$type<"upcoming" | "past" | "draft" | "completed" | "cancelled">().default("upcoming").notNull(),
   externalLink: text("external_link"),
+  image: text("image"),
   spotsTotal: integer("spots_total").default(50).notNull(),
   spotsLeft: integer("spots_left").default(50).notNull(),
   featured: boolean("featured").default(false).notNull(),
