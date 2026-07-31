@@ -32,11 +32,18 @@ import { EventItem } from "./types";
 
 export default function App() {
   const queryClient = useQueryClient();
-  const [loadingDone, setLoadingDone] = useState(false);
+  const [loadingDone, setLoadingDone] = useState(() => {
+    try {
+      return sessionStorage.getItem("techyuva_has_seen_loading") === "true";
+    } catch (e) {
+      return false;
+    }
+  });
 
   // Modal states
   const [isSpecsOpen, setIsSpecsOpen] = useState(false);
   const [selectedEventForReg, setSelectedEventForReg] = useState<EventItem | null>(null);
+  const [selectedPosterUrl, setSelectedPosterUrl] = useState<string | null>(null);
 
   // Dynamic Full-Stack Registry Queries
   const { data: dbEvents = UPCOMING_EVENTS } = useQuery({
@@ -172,21 +179,17 @@ export default function App() {
     setCtaLoading(true);
     
     try {
-      const res = await fetch("/api/auth/register", {
+      await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: ctaName, email: ctaEmail, github: ctaGithub })
-      });
-      if (res.ok) {
-        setIsCtaSuccess(true);
-      } else {
-        const data = await res.json();
-        alert(data.error || "Failed to join waitlist.");
-      }
+      }).catch(() => {});
     } catch (err) {
-      alert("Network error.");
+      // Ignore network fallback errors
     } finally {
       setCtaLoading(false);
+      setIsCtaSuccess(true);
+      window.open("https://docs.google.com/forms/d/e/1FAIpQLSeZIONKiI5Ou2O2WGwNu94AU36U0i1weiMRWlShY6u8rU3VfQ/viewform?pli=1", "_blank");
     }
   };
 
@@ -652,19 +655,26 @@ export default function App() {
                   className="relative rounded-xl border border-white/10 bg-[#0F1115]/50 overflow-hidden flex flex-col justify-between glass-panel hover:border-white/20 transition-all group"
                 >
                   {evt.image ? (
-                    <div className="relative w-full h-52 overflow-hidden border-b border-white/10">
+                    <div 
+                      onClick={() => setSelectedPosterUrl(evt.image!)}
+                      className="relative w-full bg-[#05070A] border-b border-white/10 p-3 flex items-center justify-center overflow-hidden group cursor-pointer"
+                    >
                       <img 
                         src={evt.image} 
                         alt={evt.title} 
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" 
+                        className="w-full max-h-[460px] object-contain rounded-lg shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]" 
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F1115] via-transparent to-black/50" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F1115]/90 via-transparent to-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                        <span className="px-3.5 py-2 bg-black/85 backdrop-blur-md border border-white/20 text-white font-mono text-[11px] uppercase font-bold rounded-lg tracking-wider flex items-center gap-1.5 shadow-2xl">
+                          🔍 Click to View Full Poster
+                        </span>
+                      </div>
                       <div className="absolute top-3 left-3 right-3 flex justify-between items-start pointer-events-none">
-                        <span className="text-[10px] font-mono text-[#00BFFF] bg-[#0A0A0A]/85 backdrop-blur-md border border-[#00BFFF]/30 py-0.5 px-2.5 rounded font-bold">
+                        <span className="text-[10px] font-mono text-[#00BFFF] bg-[#0A0A0A]/90 backdrop-blur-md border border-[#00BFFF]/30 py-0.5 px-2.5 rounded font-bold shadow-md">
                           {evt.category?.toUpperCase() || "SPRINT"}
                         </span>
                         {evt.featured && (
-                          <span className="text-[9px] font-mono text-saffron bg-[#0A0A0A]/85 backdrop-blur-md border border-saffron/30 py-0.5 px-2.5 rounded font-bold uppercase tracking-wider">
+                          <span className="text-[9px] font-mono text-saffron bg-[#0A0A0A]/90 backdrop-blur-md border border-saffron/30 py-0.5 px-2.5 rounded font-bold uppercase tracking-wider shadow-md">
                             Featured Sprint
                           </span>
                         )}
@@ -1238,6 +1248,24 @@ export default function App() {
         </div>
       </section>
 
+      {/* SECTION 11.5: READY TO PARTNER DIRECT REACH BANNER */}
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <div className="rounded-2xl bg-[#0B0F19]/90 border border-white/[0.1] backdrop-blur-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+          <div className="space-y-1.5 text-left w-full md:w-auto">
+            <h3 className="text-lg sm:text-xl font-bold text-white font-display">Ready to partner? Reach out directly.</h3>
+            <p className="text-xs text-gray-400 font-sans font-light">Our partnerships team typically responds within 24 hours.</p>
+          </div>
+          <a
+            href="mailto:techyuva.org@gmail.com"
+            className="w-full md:w-auto px-6 py-3.5 bg-[#8B5CF6]/20 hover:bg-[#8B5CF6]/30 border border-[#8B5CF6]/40 text-white rounded-xl font-mono text-xs font-bold flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-[0_0_25px_rgba(139,92,246,0.25)] hover:shadow-[0_0_35px_rgba(139,92,246,0.4)]"
+          >
+            <Send className="w-4 h-4 text-[#A78BFA]" />
+            techyuva.org@gmail.com
+            <span className="font-mono text-xs">→</span>
+          </a>
+        </div>
+      </section>
+
       {/* SECTION 12: PROFESSIONAL FOOTER BAR */}
       <footer className="border-t border-border-color bg-footer-bg py-12 px-6 font-mono text-xs text-text-secondary w-full">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-border-color">
@@ -1346,6 +1374,25 @@ export default function App() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* FULL POSTER LIGHTBOX MODAL */}
+      {selectedPosterUrl && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer animate-fade-in"
+          onClick={() => setSelectedPosterUrl(null)}
+        >
+          <div className="relative max-w-4xl max-h-[92vh] overflow-hidden rounded-2xl border border-white/20 shadow-2xl p-2 bg-[#0A0A0A]">
+            <img src={selectedPosterUrl} alt="Event Poster" className="w-full h-full object-contain max-h-[85vh] rounded-xl" />
+            <button 
+              type="button" 
+              onClick={() => setSelectedPosterUrl(null)}
+              className="absolute top-4 right-4 bg-black/80 text-white hover:text-saffron px-3.5 py-1.5 rounded-full border border-white/20 font-mono text-xs font-bold cursor-pointer transition-colors shadow-lg"
+            >
+              ✕ Close
+            </button>
           </div>
         </div>
       )}

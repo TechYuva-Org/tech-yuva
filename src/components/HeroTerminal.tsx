@@ -114,7 +114,7 @@ console.log("Your journey starts here 🚀");`;
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-sans font-black leading-[0.9] uppercase tracking-tighter italic text-white">
           {displayTitle.toLowerCase().includes("build future tech") ? (
-            <>Where Youth Meet To <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E90FF] to-[#00BFFF]">Build Future Tech.</span></>
+            <>Where Youth Meet To <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E90FF] to-[#00BFFF] inline-block pr-3.5 pb-1">Build Future Tech.</span></>
           ) : (
             displayTitle.toUpperCase() === "TECH YUVA" ? (
               <><span className="text-saffron">TECH</span> <span className="text-emerald-green">YUVA</span></>

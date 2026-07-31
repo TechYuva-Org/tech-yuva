@@ -33,25 +33,30 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const finishSequence = useCallback(() => {
     if (hasCompleted.current) return;
     hasCompleted.current = true;
+    try {
+      sessionStorage.setItem("techyuva_has_seen_loading", "true");
+    } catch (e) {}
     setPhase("fadeout");
     setTimeout(() => {
       setPhase("done");
       onComplete();
-    }, 800); // Wait for CSS opacity transition
+    }, 400); // Wait for CSS opacity transition
   }, [onComplete]);
 
-  // Initial Check (prefers-reduced-motion)
+  // Initial Check (prefers-reduced-motion & sessionStorage)
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPhase("done");
-      onComplete();
-      return;
-    }
+    try {
+      if (sessionStorage.getItem("techyuva_has_seen_loading") === "true" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        setPhase("done");
+        onComplete();
+        return;
+      }
+    } catch (e) {}
     
     // Safety fallback
     const fallbackTimer = setTimeout(() => {
       if (!hasCompleted.current) finishSequence();
-    }, 20000);
+    }, 12000);
     return () => clearTimeout(fallbackTimer);
   }, [onComplete, finishSequence]);
 
@@ -124,7 +129,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     if (phase === "resolution") {
       const timer = setTimeout(() => {
         finishSequence();
-      }, 1200);
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [phase, finishSequence]);
