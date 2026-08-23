@@ -230,7 +230,7 @@ export default function App() {
           
           {/* Logo Brand with custom circular brand emblem used as-is */}
           <div className="flex items-center select-none cursor-pointer">
-            <TechYuvaLogo size={56} />
+            <TechYuvaLogo size={66} />
           </div>
 
           {/* Mobile Menu State */}
@@ -1272,7 +1272,7 @@ export default function App() {
           
           <div className="space-y-3 md:col-span-1">
             <div className="flex justify-start">
-              <TechYuvaLogo size={52} />
+              <TechYuvaLogo size={60} />
             </div>
             <p className="text-[11px] leading-relaxed text-text-secondary">
               The flagship student-led innovation guild empowering developers to launch real systems securely.

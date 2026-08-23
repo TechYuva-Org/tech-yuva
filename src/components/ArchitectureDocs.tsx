@@ -396,7 +396,7 @@ export default function ArchitectureDocs({ isOpen, onClose }: ArchitectureDocsPr
         {/* Panel Footer */}
         <div className="p-6 border-t border-white/5 bg-brand-bg-sec/50 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[11px] font-mono text-[#9CA3AF]">
-            Architecture & Development by <span className="text-white font-semibold">Daksh Chaudhary</span> • Founded by <span className="text-white font-semibold">Lakshay Soni</span>
+            Architecture & Development by <span className="text-white font-semibold">Tech Team Tech Yuva</span> • Founded by <span className="text-white font-semibold">Lakshay Soni</span>
           </p>
           <div className="flex gap-2">
             <button 
