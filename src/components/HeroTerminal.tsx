@@ -57,7 +57,7 @@ console.log("Your journey starts here 🚀");`;
     const logs = [
       "⚡ Initializing Vercel Edge Node...",
       "🔍 Resolving dependencies from package.json...",
-      "📦 Implemented @google/genai module structures...",
+      "📦 Implemented module structures...",
       "⚙️ Compiling TypeScript server targets to CommonJS...",
       "✅ Execution success in 143ms."
     ];
