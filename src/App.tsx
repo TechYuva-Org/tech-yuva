@@ -10,7 +10,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import HeroTerminal from "./components/HeroTerminal";
 import FounderVision from "./components/FounderVision";
 import TechYuvaAI from "./components/TechYuvaAI";
-import ArchitectureDocs from "./components/ArchitectureDocs";
+
 import EventRegisterModal from "./components/EventRegisterModal";
 import TechYuvaLogo from "./components/TechYuvaLogo";
 import CertificateViewer from "./components/CertificateViewer";
@@ -41,7 +41,6 @@ export default function App() {
   });
 
   // Modal states
-  const [isSpecsOpen, setIsSpecsOpen] = useState(false);
   const [selectedEventForReg, setSelectedEventForReg] = useState<EventItem | null>(null);
   const [selectedPosterUrl, setSelectedPosterUrl] = useState<string | null>(null);
 
@@ -248,9 +247,6 @@ export default function App() {
             <button onClick={() => scrollToSection(mainOffersRef)} className="hover:text-text-primary transition-colors cursor-pointer">ECOSYSTEM</button>
             <button onClick={() => scrollToSection(mainEventsRef)} className="hover:text-text-primary transition-colors cursor-pointer">EVENTS</button>
             <button onClick={() => scrollToSection(mainGalleryRef)} className="hover:text-text-primary transition-colors cursor-pointer">COMMUNITY</button>
-            <button onClick={() => setIsSpecsOpen(true)} className="text-[#1E90FF] hover:text-text-primary transition-all cursor-pointer flex items-center gap-1.5 font-bold">
-              <Layout className="w-3.5 h-3.5" /> ARCHITECT SPECS
-            </button>
           </nav>
 
           {/* Join Community CTA & Login */}
@@ -285,8 +281,7 @@ export default function App() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <HeroTerminal 
-            key={loadingDone ? 'ready' : 'loading'}
-            onOpenSpecs={() => setIsSpecsOpen(true)} 
+            onExplore={() => scrollToSection(mainOffersRef)}
             onScrollToEvents={() => scrollToSection(mainEventsRef)}
             cmsHero={cmsData?.heroContent}
           />
@@ -1290,14 +1285,6 @@ export default function App() {
           </div>
 
           <div className="space-y-2.5">
-            <h5 className="text-[11px] font-bold text-text-primary uppercase tracking-wider">Engineering Specs</h5>
-            <ul className="space-y-1.5 text-[11px]">
-              <li><button onClick={() => setIsSpecsOpen(true)} className="hover:text-text-primary transition-colors cursor-pointer flex items-center gap-1.5 text-neon-blue font-bold text-left">🛠️ Interactive Blueprint Manual</button></li>
-              <li><a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-text-primary transition-colors flex items-center gap-1.5 text-left">🐙 Core Club Org GitHub</a></li>
-            </ul>
-          </div>
-
-          <div className="space-y-2.5">
             <h5 className="text-[11px] font-bold text-text-primary uppercase tracking-wider">Primary Reach Office</h5>
             <p className="text-[11px] text-text-secondary">
               Lead Architect Seat:<br />
@@ -1326,11 +1313,6 @@ export default function App() {
       {/* FLOATING ACTIVE SYSTEM LAYOUT COMPONENT NODES */}
       <TechYuvaAI />
       
-      <ArchitectureDocs 
-        isOpen={isSpecsOpen} 
-        onClose={() => setIsSpecsOpen(false)} 
-      />
-
       <EventRegisterModal 
         event={selectedEventForReg}
         isOpen={selectedEventForReg !== null}

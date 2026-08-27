@@ -3,13 +3,12 @@ import { Terminal, Copy, Check, Play, RefreshCw, Smartphone, Laptop, Sparkles } 
 import { motion } from "motion/react";
 
 interface HeroTerminalProps {
-  onOpenSpecs: () => void;
-  onScrollToEvents: () => void;
+  onExplore?: () => void;
+  onScrollToEvents?: () => void;
   cmsHero?: any;
-  key?: string;
 }
 
-export default function HeroTerminal({ onOpenSpecs, onScrollToEvents, cmsHero }: HeroTerminalProps) {
+export default function HeroTerminal({ onExplore, onScrollToEvents, cmsHero }: HeroTerminalProps) {
   const [copied, setCopied] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [progressLog, setProgressLog] = useState<string[]>([]);
@@ -24,7 +23,6 @@ export default function HeroTerminal({ onOpenSpecs, onScrollToEvents, cmsHero }:
   const subtitleText = cmsHero?.subtitle || "Where Youth Meet To Build Future Tech.";
   const descriptionText = cmsHero?.description || "Empowering the next generation of builders through AI, Web3, and high-performance startup culture.";
   const button1Text = cmsHero?.ctaButton1Text || "JOIN COMMUNITY";
-  const button2Text = cmsHero?.ctaButton2Text || "VIEW STATS & SPECS";
 
   const fullCodeText = cmsHero?.terminalCode || `const future = {
   dream: "Become a Developer",
@@ -138,16 +136,6 @@ console.log("Your journey starts here 🚀");`;
             {button1Text}
             <span className="font-mono text-xs">→</span>
           </a>
-          
-          <button
-            type="button"
-            onClick={onOpenSpecs}
-            className="h-12 px-8 bg-white/[0.04] backdrop-blur-xl border border-white/[0.1] text-white font-bold uppercase text-xs tracking-widest rounded-lg hover:bg-white/[0.08] hover:border-white/[0.15] transition-all italic flex items-center justify-center gap-2"
-            id="hero-specs-cta"
-          >
-            <Terminal className="w-4 h-4 text-[#1E90FF]" />
-            {button2Text}
-          </button>
         </div>
 
         {/* Custom statistics badge ribbon */}

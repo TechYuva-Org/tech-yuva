@@ -30,6 +30,11 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const titleTimer = useRef<NodeJS.Timeout | null>(null);
   const logTimer = useRef<NodeJS.Timeout | null>(null);
 
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
   const finishSequence = useCallback(() => {
     if (hasCompleted.current) return;
     hasCompleted.current = true;
@@ -39,9 +44,9 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     setPhase("fadeout");
     setTimeout(() => {
       setPhase("done");
-      onComplete();
+      onCompleteRef.current();
     }, 400); // Wait for CSS opacity transition
-  }, [onComplete]);
+  }, []);
 
   // Initial Check (prefers-reduced-motion & sessionStorage)
   useEffect(() => {
