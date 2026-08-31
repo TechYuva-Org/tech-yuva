@@ -16,11 +16,10 @@ export default function HeroTerminal({ onExplore, onScrollToEvents, cmsHero }: H
   const [executionLine, setExecutionLine] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [displayTitle, setDisplayTitle] = useState(cmsHero?.title || "TECH YUVA");
+  const [displayTitle, setDisplayTitle] = useState("TECH YUVA");
 
   // Derive dynamic strings
   const badgeText = cmsHero?.badge || "ADMISSION OPEN • NEW COHORT 2026";
-  const subtitleText = cmsHero?.subtitle || "Where Youth Meet To Build Future Tech.";
   const descriptionText = cmsHero?.description || "Empowering the next generation of builders through AI, Web3, and high-performance startup culture.";
   const button1Text = cmsHero?.ctaButton1Text || "JOIN COMMUNITY";
 
@@ -69,10 +68,10 @@ console.log("Your journey starts here 🚀");`;
         currentLogIdx++;
       } else {
         clearInterval(logInterval);
-        setOutputResult("Your journey starts here 🚀\nJoin Tech Yuva to access active Hackathons! ✨");
+        setOutputResult("⚡ Initialized Tech Yuva Ecosystem.\n🚀 Real Projects • Hackathons • Startup Culture\n✨ Welcome to the Community!");
         setIsRunning(false);
         setExecutionLine(-1);
-        setDisplayTitle(cmsHero?.subtitle || "WHERE YOUTH MEET TO BUILD FUTURE TECH.");
+        setDisplayTitle("WHERE YOUTH MEET TO BUILD FUTURE TECH.");
       }
     }, 450);
 
@@ -90,9 +89,10 @@ console.log("Your journey starts here 🚀");`;
 
   // Automatically execute code once on viewport load
   useEffect(() => {
+    setDisplayTitle("TECH YUVA");
     const timer = setTimeout(() => {
       runCodeCompile();
-    }, 1500);
+    }, 1200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -110,13 +110,11 @@ console.log("Your journey starts here 🚀");`;
           <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#00BFFF]">{badgeText}</span>
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-sans font-black leading-[0.9] uppercase tracking-tighter italic text-white">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-sans font-black leading-[0.9] uppercase tracking-tighter italic text-white transition-all duration-700">
           {displayTitle.toLowerCase().includes("build future tech") ? (
             <>Where Youth Meet To <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E90FF] to-[#00BFFF] inline-block pr-3.5 pb-1">Build Future Tech.</span></>
           ) : (
-            displayTitle.toUpperCase() === "TECH YUVA" ? (
-              <><span className="text-saffron">TECH</span> <span className="text-emerald-green">YUVA</span></>
-            ) : displayTitle
+            <><span className="text-saffron">TECH</span> <span className="text-emerald-green">YUVA</span></>
           )}
         </h1>
 

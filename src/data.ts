@@ -1,6 +1,8 @@
 import { EventItem, GalleryItem, Sponsor, Testimonial } from "./types";
 
-export const UPCOMING_EVENTS: EventItem[] = [
+export const UPCOMING_EVENTS: EventItem[] = [];
+
+export const PAST_EVENTS: EventItem[] = [
   {
     id: "drop-hack-26",
     title: "DROP HACK'26",
@@ -10,15 +12,13 @@ export const UPCOMING_EVENTS: EventItem[] = [
     time: "10 Hours",
     venue: "Partner Event (Unstop)",
     tags: ["AI", "Web3", "Cyber Security", "FinTech", "Healthcare"],
-    description: "Tech Yuva is excited to announce that we're the Official Community Partner for DROP HACK'26! Compete with some of the brightest minds for a ₹50,000+ Prize Pool. Perks include Certificates, Goodies, and Merch.",
-    status: "upcoming",
+    description: "Tech Yuva was proud to be the Official Community Partner for DROP HACK'26! Hundreds of builders competed for a ₹50,000+ Prize Pool.",
+    status: "past",
     externalLink: "https://unstop.com/hackathons/drophack-siec-community-1701822?lb=e14Q58g&utm_medium=Share&utm_source=online_coding_challenge&utm_campaign=Manav04mahawar",
-    featured: true,
-    image: "/drophack-poster.png"
+    featured: false,
+    image: ""
   }
 ];
-
-export const PAST_EVENTS: EventItem[] = [];
 
 export const GALLERY_ITEMS: GalleryItem[] = [];
 
@@ -101,7 +101,6 @@ Root Container
  └── components/
       ├── ArchitectureDocs.tsx (Sliding engineering specs panel)
       ├── HeroTerminal.tsx (Cinematic loop console emulator)
-      ├── TechYuvaAI.tsx (Bottom-right conversational AI module)
       ├── FounderVision.tsx (Inspiring play/hover element)
       └── EventRegisterModal.tsx (Clean user registration dialog)
 `
@@ -131,7 +130,6 @@ tech-yuva-nextjs/
  │       └── page.tsx       # Standalone registration layout
  ├── components/
  │   ├── HeroTerminal.tsx   # "use client" console rendering
- │   ├── TechYuvaAI.tsx     # Client-side floating speech panel
  │   └── ArchitectureDocs.tsx # Slideshow details drawer
  ├── tailwind.config.ts     # Brand color theme injections
  ├── package.json           # Next.js 14+ / 15+ declarations

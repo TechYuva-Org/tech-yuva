@@ -9,7 +9,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // Components
 import HeroTerminal from "./components/HeroTerminal";
 import FounderVision from "./components/FounderVision";
-import TechYuvaAI from "./components/TechYuvaAI";
 
 import EventRegisterModal from "./components/EventRegisterModal";
 import TechYuvaLogo from "./components/TechYuvaLogo";
@@ -194,7 +193,7 @@ export default function App() {
 
   return (
     <>
-    <LoadingScreen onComplete={() => setLoadingDone(true)} />
+    {!loadingDone && <LoadingScreen onComplete={() => setLoadingDone(true)} />}
     <div className={`min-h-[100dvh] bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
@@ -740,10 +739,23 @@ export default function App() {
                 </div>
               ))}
               
-              {dbEvents.filter(e => e.status === "upcoming" || e.status === "active" || !e.status).length === 0 && (
-                <div className="col-span-3 text-center py-12 border border-white/5 bg-[#0d0f13]/40 rounded-xl space-y-2">
-                  <p className="text-xs text-secondary-text">No active upcoming sprints found on the database.</p>
-                  <p className="text-[10px] font-mono text-[#00BFFF]">Switch to the Admin tab to create custom ones instantly!</p>
+              {dbEvents.filter(e => e.status === "upcoming" || e.status === "active").length === 0 && (
+                <div className="col-span-full text-center py-16 px-6 border border-white/10 bg-[#0d0f13]/40 rounded-xl space-y-4">
+                  <div className="w-12 h-12 mx-auto rounded-full bg-[#1E90FF]/10 text-[#00BFFF] border border-[#1E90FF]/20 flex items-center justify-center">
+                    <Calendar className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-display uppercase tracking-wider text-white">Next Flagship Cohort In Preparation</h3>
+                  <p className="text-xs text-text-secondary max-w-md mx-auto leading-relaxed font-sans">
+                    Stay tuned! The Tech Yuva council is curating the next wave of high-performance hackathons, physical sprints, and dev bootcamps.
+                  </p>
+                  <a
+                    href="https://chat.whatsapp.com/EARK4FcxQn0EW987zH9I08"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1E90FF]/20 border border-[#1E90FF]/40 text-white font-mono text-xs uppercase font-bold rounded-lg hover:bg-[#1E90FF]/30 transition-all shadow-lg cursor-pointer"
+                  >
+                    Join WhatsApp Community →
+                  </a>
                 </div>
               )}
             </div>
@@ -1311,8 +1323,6 @@ export default function App() {
       </footer>
 
       {/* FLOATING ACTIVE SYSTEM LAYOUT COMPONENT NODES */}
-      <TechYuvaAI />
-      
       <EventRegisterModal 
         event={selectedEventForReg}
         isOpen={selectedEventForReg !== null}

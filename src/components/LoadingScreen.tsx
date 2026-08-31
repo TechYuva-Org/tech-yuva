@@ -9,9 +9,7 @@ const SYSTEM_LOGS = [
   "Booting Tech Yuva Core...",
   "Loading Innovation Engine...",
   "Connecting Community Services...",
-  "Initializing AI Assistant...",
   "Syncing Developer Network...",
-  "Loading Event Platform...",
   "Connecting Future Builders...",
   "Platform Ready."
 ];
@@ -45,25 +43,34 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     setTimeout(() => {
       setPhase("done");
       onCompleteRef.current();
-    }, 400); // Wait for CSS opacity transition
+    }, 350);
   }, []);
 
-  // Initial Check (prefers-reduced-motion & sessionStorage)
+  // Initial Check (prefers-reduced-motion & sessionStorage & Safety hard timeout)
   useEffect(() => {
     try {
       if (sessionStorage.getItem("techyuva_has_seen_loading") === "true" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         setPhase("done");
-        onComplete();
+        onCompleteRef.current();
         return;
       }
     } catch (e) {}
     
-    // Safety fallback
+    // Auto-advance if video takes more than 1.5s or gets blocked on mobile
+    const videoFallback = setTimeout(() => {
+      setPhase(p => (p === "video" ? "interactive" : p));
+    }, 1500);
+
+    // Hard absolute safety fallback
     const fallbackTimer = setTimeout(() => {
       if (!hasCompleted.current) finishSequence();
-    }, 12000);
-    return () => clearTimeout(fallbackTimer);
-  }, [onComplete, finishSequence]);
+    }, 4500);
+
+    return () => {
+      clearTimeout(videoFallback);
+      clearTimeout(fallbackTimer);
+    };
+  }, [finishSequence]);
 
   // Handle Video completion
   const handleVideoEnd = () => {
@@ -71,7 +78,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   };
 
   const handleVideoError = () => {
-    // If video fails, jump straight to interactive
     if (phase === "video") setPhase("interactive");
   };
 
@@ -85,10 +91,9 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         i++;
         if (i === fullTitle.length) {
           if (titleTimer.current) clearInterval(titleTimer.current);
-          // Start logs
-          setTimeout(() => setCurrentLogIndex(0), 300);
+          setTimeout(() => setCurrentLogIndex(0), 150);
         }
-      }, 50);
+      }, 35);
     }
     return () => {
       if (titleTimer.current) clearInterval(titleTimer.current);
@@ -102,8 +107,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       let i = 0;
       setTypedText("");
       
-      // Update progress based on logs
-      setProgress(Math.floor((currentLogIndex / SYSTEM_LOGS.length) * 100));
+      setProgress(Math.floor(((currentLogIndex + 1) / SYSTEM_LOGS.length) * 100));
 
       logTimer.current = setInterval(() => {
         setTypedText(targetText.substring(0, i + 1));
@@ -112,15 +116,13 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           if (logTimer.current) clearInterval(logTimer.current);
           
           if (currentLogIndex === SYSTEM_LOGS.length - 1) {
-            // Reached the end of logs
             setProgress(100);
-            setTimeout(() => setPhase("resolution"), 400);
+            setTimeout(() => setPhase("resolution"), 250);
           } else {
-            // Next log
-            setTimeout(() => setCurrentLogIndex(prev => prev + 1), 150);
+            setTimeout(() => setCurrentLogIndex(prev => prev + 1), 80);
           }
         }
-      }, 20); // Fast typing speed
+      }, 15);
     }
     return () => {
       if (logTimer.current) clearInterval(logTimer.current);
@@ -129,12 +131,10 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
   // Resolution phase logic
   useEffect(() => {
-    // The finishSequence is now triggered via onAnimationEnd on the ripple element
-    // Safety fallback in case animation events don't fire reliably in some browsers
     if (phase === "resolution") {
       const timer = setTimeout(() => {
         finishSequence();
-      }, 500);
+      }, 400);
       return () => clearTimeout(timer);
     }
   }, [phase, finishSequence]);
@@ -143,7 +143,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
   return (
     <div
-      className={`loading-screen-overlay ${phase === "fadeout" ? "loading-screen-fadeout" : ""}`}
+      className={`loading-screen-overlay ${phase === "resolution" || phase === "fadeout" ? "pointer-events-none" : ""} ${phase === "fadeout" ? "loading-screen-fadeout" : ""}`}
       aria-hidden="true"
       role="presentation"
     >
