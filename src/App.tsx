@@ -280,6 +280,7 @@ export default function App() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <HeroTerminal 
+            isReady={loadingDone}
             onExplore={() => scrollToSection(mainOffersRef)}
             onScrollToEvents={() => scrollToSection(mainEventsRef)}
             cmsHero={cmsData?.heroContent}

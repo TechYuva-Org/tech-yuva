@@ -46,6 +46,16 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     }, 350);
   }, []);
 
+  // Auto-play video on mount
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Fallback to interactive only if browser strictly blocks autoplay
+        setPhase("interactive");
+      });
+    }
+  }, []);
+
   // Initial Check (prefers-reduced-motion & sessionStorage & Safety hard timeout)
   useEffect(() => {
     try {
@@ -55,19 +65,13 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         return;
       }
     } catch (e) {}
-    
-    // Auto-advance if video takes more than 1.5s or gets blocked on mobile
-    const videoFallback = setTimeout(() => {
-      setPhase(p => (p === "video" ? "interactive" : p));
-    }, 1500);
 
-    // Hard absolute safety fallback
+    // Hard safety timeout in case of unexpected hang
     const fallbackTimer = setTimeout(() => {
       if (!hasCompleted.current) finishSequence();
-    }, 4500);
+    }, 9000);
 
     return () => {
-      clearTimeout(videoFallback);
       clearTimeout(fallbackTimer);
     };
   }, [finishSequence]);

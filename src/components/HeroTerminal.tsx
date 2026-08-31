@@ -6,9 +6,10 @@ interface HeroTerminalProps {
   onExplore?: () => void;
   onScrollToEvents?: () => void;
   cmsHero?: any;
+  isReady?: boolean;
 }
 
-export default function HeroTerminal({ onExplore, onScrollToEvents, cmsHero }: HeroTerminalProps) {
+export default function HeroTerminal({ onExplore, onScrollToEvents, cmsHero, isReady = false }: HeroTerminalProps) {
   const [copied, setCopied] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
   const [progressLog, setProgressLog] = useState<string[]>([]);
@@ -87,14 +88,19 @@ console.log("Your journey starts here 🚀");`;
     }, 200);
   };
 
-  // Automatically execute code once on viewport load
+  // Automatically execute code once hero becomes visible after loading screen
   useEffect(() => {
+    if (!isReady) {
+      setDisplayTitle("TECH YUVA");
+      return;
+    }
+
     setDisplayTitle("TECH YUVA");
     const timer = setTimeout(() => {
       runCodeCompile();
     }, 1200);
     return () => clearTimeout(timer);
-  }, []);
+  }, [isReady]);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-12 md:py-20 relative px-4" ref={containerRef}>
