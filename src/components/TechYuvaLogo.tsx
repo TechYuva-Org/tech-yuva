@@ -15,17 +15,27 @@ export default function TechYuvaLogo({
 
   return (
     <div
-      className={`relative flex items-center justify-center select-none cursor-pointer group transition-all duration-300 transform hover:scale-110 ${className}`}
+      className={`relative inline-flex items-center justify-center select-none cursor-pointer group transition-all duration-300 transform hover:scale-105 rounded-full ${className}`}
       style={{ width: dimension, height: dimension }}
     >
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#1E90FF]/0 via-[#00BFFF]/0 to-[#FF7A00]/0 group-hover:from-[#1E90FF]/30 group-hover:via-[#00BFFF]/30 group-hover:to-[#FF7A00]/20 blur-md transition-all duration-500 opacity-0 group-hover:opacity-100 pointer-events-none" />
-      <img
-        src="/tech-yuva-logo.png"
-        alt="Tech Yuva — Where Youth Meet to Build Future Tech"
-        draggable={false}
-        className={`w-full h-full object-contain relative z-10 transition-all duration-300 group-hover:drop-shadow-[0_0_16px_rgba(0,191,255,0.8)] ${animated ? "ty-logo-glow" : ""}`}
-        style={{ display: "block", mixBlendMode: "screen" }}
-      />
+      {/* Circular atmospheric ambient glow */}
+      {animated && (
+        <div className="absolute inset-0 rounded-full bg-[#1E90FF]/25 blur-lg opacity-70 group-hover:opacity-100 group-hover:bg-[#1E90FF]/40 transition-all duration-500 pointer-events-none" />
+      )}
+      
+      {/* Seamless circular mask with screen blend mode (no square box, no black border) */}
+      <div 
+        className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center pointer-events-none"
+        style={{ mixBlendMode: "screen" }}
+      >
+        <img
+          src="/tech-yuva-logo.png"
+          alt="Tech Yuva"
+          draggable={false}
+          className="w-full h-full object-cover scale-[1.04]"
+          style={{ display: "block" }}
+        />
+      </div>
     </div>
   );
 }

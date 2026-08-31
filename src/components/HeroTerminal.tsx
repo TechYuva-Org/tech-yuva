@@ -135,22 +135,6 @@ console.log("Your journey starts here 🚀");`;
             <span className="font-mono text-xs">→</span>
           </a>
         </div>
-
-        {/* Custom statistics badge ribbon */}
-        <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/5 font-mono">
-          <div>
-            <p className="text-2xl font-black font-sans text-white">500+</p>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Active Members</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black font-sans text-white">20+</p>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Events Hosted</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black font-sans text-[#FF7A00]">1000+</p>
-            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Impacted Builders</p>
-          </div>
-        </div>
       </div>
 
       {/* Hero Right Column: Floating Monitor Code Simulator */}

@@ -961,13 +961,9 @@ export default function App() {
             <span className="text-3xl font-black text-[#FF7A00]">500+</span>
             <span className="text-[10px] uppercase tracking-widest text-[#B3B3B3] font-bold font-mono mt-1">Active Members</span>
           </div>
-          <div className="p-8 flex flex-col justify-center overflow-hidden">
-            <span className="text-[10px] uppercase tracking-widest text-[#B3B3B3] font-bold mb-3 italic font-mono">Partners & Sponsors</span>
-            <div className="flex gap-4 items-center grayscale opacity-40 select-none">
-              <span className="text-[11px] font-black tracking-tighter uppercase font-sans text-white">GitHub</span>
-              <span className="text-[11px] font-black tracking-tighter uppercase font-sans text-white">Vercel</span>
-              <span className="text-[11px] font-black tracking-tighter uppercase font-sans text-white">Stripe</span>
-            </div>
+          <div className="p-8 flex flex-col justify-center bg-[#111827]/20">
+            <span className="text-3xl font-black text-[#27C93F]">1000+</span>
+            <span className="text-[10px] uppercase tracking-widest text-[#B3B3B3] font-bold font-mono mt-1">Impacted Builders</span>
           </div>
         </motion.section>
 
