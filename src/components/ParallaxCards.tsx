@@ -339,12 +339,14 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                         : "border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.6)] hover:border-white/30"
                     } bg-[#0a0d16]`}
                   >
-                    {/* Image Canvas */}
-                    <img
-                      src={card.mediaUrl}
-                      alt={card.title || `Capture ${index + 1}`}
-                      className="w-full h-full object-cover select-none transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
+                    {/* Background Image Cover Canvas */}
+                    <div
+                      className="absolute inset-0 w-full h-full bg-cover bg-center select-none transition-transform duration-500 group-hover:scale-105"
+                      style={{
+                        backgroundImage: `url("${card.mediaUrl}")`
+                      }}
+                      role="img"
+                      aria-label={card.title || `Capture ${index + 1}`}
                     />
 
                     {/* Glare Sheen Reflection on Center Card */}
@@ -431,11 +433,13 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
               onClick={() => setActiveModalIndex(index)}
               className="group relative cursor-pointer rounded-2xl overflow-hidden border border-white/10 bg-[#0a0d16] hover:border-cyan-400/50 transition-all duration-300 hover:shadow-[0_15px_35px_rgba(0,180,255,0.2)] h-[260px] sm:h-[280px]"
             >
-              <img
-                src={card.mediaUrl}
-                alt={card.title || `Capture ${index + 1}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
+              <div
+                className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+                style={{
+                  backgroundImage: `url("${card.mediaUrl}")`
+                }}
+                role="img"
+                aria-label={card.title || `Capture ${index + 1}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
