@@ -17,7 +17,7 @@ export interface ParallaxCardsProps {
   cardCount?: number;
   perspective?: number;
   mouseSensitivity?: number;
-  autoSlideInterval?: number; // in ms, default 3200
+  autoSlideInterval?: number; // in ms, default 3000
   className?: string;
 }
 
@@ -27,7 +27,7 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
   cardCount,
   perspective = 1200,
   mouseSensitivity = 2.5,
-  autoSlideInterval = 3200,
+  autoSlideInterval = 3000,
   className = ""
 }) => {
   // Normalize items ensuring all 10 images are loaded in proper sequence
@@ -51,9 +51,8 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
   const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<"3d-flow" | "grid">("3d-flow");
   const [mouseTilt, setMouseTilt] = useState({ x: 0, y: 0 }); // -1 to 1
-  const [isHovered, setIsHovered] = useState(false);
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(true);
-  const [isInViewport, setIsInViewport] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(true);
   const [containerWidth, setContainerWidth] = useState(1000);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,14 +73,17 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
     return () => observer.disconnect();
   }, []);
 
-  // IntersectionObserver: auto-slide triggers when user scrolls/stops on the gallery
+  // IntersectionObserver: auto-slide active when in viewport
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) {
+      setIsInViewport(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsInViewport(entry.isIntersecting);
       },
-      { threshold: 0.25 }
+      { threshold: 0.01 }
     );
     observer.observe(containerRef.current);
     return () => observer.disconnect();
@@ -96,12 +98,10 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
     setCurrentIndex((prev) => (prev - 1 + cardList.length) % cardList.length);
   }, [cardList.length]);
 
-  // Auto-slide effect: slides from right to left when user stops on the gallery
+  // Auto-slide effect: slides right to left reliably on PC and Mobile
   useEffect(() => {
     if (
-      !isInViewport ||
       !isAutoPlayEnabled ||
-      isHovered ||
       activeModalIndex !== null ||
       viewMode !== "3d-flow"
     ) {
@@ -109,13 +109,13 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
     }
 
     const timer = setInterval(() => {
-      nextSlide();
+      setCurrentIndex((prev) => (prev + 1) % cardList.length);
     }, autoSlideInterval);
 
     return () => clearInterval(timer);
-  }, [isInViewport, isAutoPlayEnabled, isHovered, activeModalIndex, viewMode, nextSlide, autoSlideInterval]);
+  }, [isAutoPlayEnabled, activeModalIndex, viewMode, cardList.length, autoSlideInterval]);
 
-  // Smooth mouse tilt tracking for active card
+  // Mouse tilt tracking for active center card
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -127,20 +127,14 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
     });
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
   const handleMouseLeave = () => {
-    setIsHovered(false);
     setMouseTilt({ x: 0, y: 0 });
   };
 
-  // Touch gesture support with responsive swipe detection
+  // Touch gesture support with responsive swipe detection for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartXRef.current = e.touches[0].clientX;
     touchStartTimeRef.current = Date.now();
-    setIsHovered(true); // pause auto-slide while touching
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -149,15 +143,12 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
       const diff = touchStartXRef.current - touchEndX;
       const timeDiff = Date.now() - touchStartTimeRef.current;
 
-      // Sensitive swipe detection for mobile
-      if (Math.abs(diff) > 30 || (Math.abs(diff) > 15 && timeDiff < 250)) {
+      if (Math.abs(diff) > 25 || (Math.abs(diff) > 12 && timeDiff < 250)) {
         if (diff > 0) nextSlide();
         else prevSlide();
       }
     }
     touchStartXRef.current = null;
-    // Resume auto-slide after brief pause
-    setTimeout(() => setIsHovered(false), 2000);
   };
 
   // Keyboard navigation
@@ -184,15 +175,15 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
 
   return (
     <div className={`relative w-full select-none ${className}`}>
-      {/* Top Controls Bar: Clean, User-Friendly Mode Switcher & Counter */}
+      {/* Top Controls Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4 px-1">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wider text-cyan-400 bg-cyan-950/40 border border-cyan-500/20 backdrop-blur-md">
             <Sparkles className="w-3 h-3 text-cyan-400" />
             <span>3D FLOW • {cardList.length} ARCHIVES</span>
           </span>
-          {isAutoPlayEnabled && isInViewport && !isHovered && viewMode === "3d-flow" && (
-            <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400/90">
+          {isAutoPlayEnabled && viewMode === "3d-flow" && (
+            <span className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-400/90">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Auto-sliding right &rarr; left
             </span>
@@ -245,7 +236,6 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
         <div
           ref={containerRef}
           onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -288,7 +278,6 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
               let offset = (index - currentIndex + count) % count;
               if (offset > count / 2) offset -= count;
 
-              // On mobile, render -2 to +2 to keep layout tight; on desktop render -3 to +3
               const maxRange = isMobile ? 2 : 3;
               if (Math.abs(offset) > maxRange) return null;
 
@@ -296,7 +285,7 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
               const absOffset = Math.abs(offset);
 
               // Responsive 3D positioning along curved arc
-              const stepX = isMobile ? Math.min(containerWidth * 0.65, 230) : 280;
+              const stepX = isMobile ? Math.min(containerWidth * 0.65, 220) : 280;
               const translateX = offset * stepX;
               const translateZ = -absOffset * (isMobile ? 90 : 130);
               const rotateY = offset * (isMobile ? -20 : -25);
@@ -304,7 +293,6 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
               const opacity = 1 - absOffset * (isMobile ? 0.35 : 0.25);
               const zIndex = 30 - absOffset * 5;
 
-              // Tilt exclusively on active center card for performance
               const tiltX = isCenter && !isMobile ? -mouseTilt.y * mouseSensitivity * 2 : 0;
               const tiltY = isCenter && !isMobile ? mouseTilt.x * mouseSensitivity * 2.5 : 0;
 
@@ -331,22 +319,31 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                     transitionTimingFunction: "cubic-bezier(0.2, 0.8, 0.2, 1)"
                   }}
                 >
-                  {/* Double-bezel hardware styling */}
+                  {/* Card Shell */}
                   <div
                     className={`relative w-full h-full rounded-2xl overflow-hidden border transition-all duration-300 ${
                       isCenter
                         ? "border-cyan-400/50 shadow-[0_20px_60px_rgba(0,180,255,0.25)] ring-1 ring-cyan-400/30"
                         : "border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.6)] hover:border-white/30"
                     } bg-[#0a0d16]`}
+                    style={{
+                      WebkitBackfaceVisibility: "hidden",
+                      backfaceVisibility: "hidden",
+                      transform: "translateZ(0)"
+                    }}
                   >
-                    {/* Background Image Cover Canvas */}
-                    <div
-                      className="absolute inset-0 w-full h-full bg-cover bg-center select-none transition-transform duration-500 group-hover:scale-105"
+                    {/* Cross-Platform High-Performance Image Cover Canvas */}
+                    <img
+                      src={card.mediaUrl}
+                      alt={card.title || `Capture ${index + 1}`}
+                      className="absolute inset-0 w-full h-full object-cover object-center select-none transition-transform duration-500 group-hover:scale-105"
                       style={{
-                        backgroundImage: `url("${card.mediaUrl}")`
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center"
                       }}
-                      role="img"
-                      aria-label={card.title || `Capture ${index + 1}`}
+                      loading="eager"
                     />
 
                     {/* Glare Sheen Reflection on Center Card */}
@@ -433,13 +430,15 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
               onClick={() => setActiveModalIndex(index)}
               className="group relative cursor-pointer rounded-2xl overflow-hidden border border-white/10 bg-[#0a0d16] hover:border-cyan-400/50 transition-all duration-300 hover:shadow-[0_15px_35px_rgba(0,180,255,0.2)] h-[260px] sm:h-[280px]"
             >
-              <div
-                className="absolute inset-0 w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500"
+              <img
+                src={card.mediaUrl}
+                alt={card.title || `Capture ${index + 1}`}
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 style={{
-                  backgroundImage: `url("${card.mediaUrl}")`
+                  objectFit: "cover",
+                  objectPosition: "center"
                 }}
-                role="img"
-                aria-label={card.title || `Capture ${index + 1}`}
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
@@ -465,7 +464,7 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
         </div>
       )}
 
-      {/* CRYSTAL-CLEAR HIGH-RES LIGHTBOX MODAL (ZERO BLUR, FULL NATIVE RESOLUTION) */}
+      {/* CRYSTAL-CLEAR HIGH-RES LIGHTBOX MODAL */}
       <AnimatePresence>
         {activeModalIndex !== null && (
           <div
@@ -500,7 +499,7 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                 </button>
               </div>
 
-              {/* Pure High-Res Photo Container (Zero blur filter, crisp object-contain) */}
+              {/* Pure High-Res Photo Container */}
               <div className="relative w-full flex-1 min-h-[260px] max-h-[66vh] bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
                 <img
                   src={cardList[activeModalIndex].mediaUrl}

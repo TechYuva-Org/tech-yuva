@@ -87,7 +87,7 @@ export async function seedDefaultEvents() {
         statLabel: "Delegation",
         statValue: "45+ Builders",
         mediaType: "image" as const,
-        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.34.jpeg",
+        mediaUrl: "/Images/gallery-4.jpeg",
         highlightText: "Tech Yuva builders visited the Paytm campus for exclusive architecture masterclasses and fintech engineering deep-dives.",
         featured: true
       },
@@ -98,7 +98,7 @@ export async function seedDefaultEvents() {
         statLabel: "Attendance",
         statValue: "Full House",
         mediaType: "image" as const,
-        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.36.jpeg",
+        mediaUrl: "/Images/gallery-5.jpeg",
         highlightText: "Live technical discourse on scaling high-frequency transactional architectures and distributed system resiliency.",
         featured: true
       },
@@ -109,7 +109,7 @@ export async function seedDefaultEvents() {
         statLabel: "Collaboration",
         statValue: "100% Student-Led",
         mediaType: "image" as const,
-        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.46.jpeg",
+        mediaUrl: "/Images/gallery-7.jpeg",
         highlightText: "Hands-on collaboration session uniting developers, security researchers, and designers under Tech Yuva.",
         featured: true
       },
@@ -120,7 +120,7 @@ export async function seedDefaultEvents() {
         statLabel: "Impact",
         statValue: "250+ Attendees",
         mediaType: "image" as const,
-        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.47.jpeg",
+        mediaUrl: "/Images/gallery-8.jpeg",
         highlightText: "Keynote talks, open-source project showcases, and student founder pitch exhibitions in the central auditorium.",
         featured: true
       }

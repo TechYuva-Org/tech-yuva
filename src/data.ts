@@ -66,7 +66,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "COMMUNITY",
     statValue: "500+ Strong",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.11.40.jpeg",
+    mediaUrl: "/Images/gallery-1.jpeg",
     highlightText: "Celebrating community milestones, student contributors, and hackathon champions building India's tech future."
   },
   {
@@ -76,7 +76,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "PARTNERSHIP",
     statValue: "Ecosystem Link",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.05.jpeg",
+    mediaUrl: "/Images/gallery-2.jpeg",
     highlightText: "Tech Yuva members presenting technical initiatives and student innovation projects to industry representatives."
   },
   {
@@ -86,7 +86,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "INSIGHTS",
     statValue: "1-on-1 Access",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.22.jpeg",
+    mediaUrl: "/Images/gallery-3.jpeg",
     highlightText: "Deep-dive career guidance, code reviews, and industry roadmap insights directly from senior practitioners."
   },
   {
@@ -96,7 +96,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "DELEGATION",
     statValue: "45+ Builders",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.34.jpeg",
+    mediaUrl: "/Images/gallery-4.jpeg",
     highlightText: "Tech Yuva builders visited the Paytm campus for exclusive architecture masterclasses and fintech engineering deep-dives."
   },
   {
@@ -106,7 +106,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "ATTENDANCE",
     statValue: "Full House",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.36.jpeg",
+    mediaUrl: "/Images/gallery-5.jpeg",
     highlightText: "Live technical discourse on scaling high-frequency transactional architectures and distributed system resiliency."
   },
   {
@@ -116,7 +116,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "NETWORKING",
     statValue: "Active Exchange",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.42.jpeg",
+    mediaUrl: "/Images/gallery-6.jpeg",
     highlightText: "Spontaneous problem solving, hackathon team formation, and startup ideation during conference intermissions."
   },
   {
@@ -126,7 +126,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "COLLABORATION",
     statValue: "100% Student-Led",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.46.jpeg",
+    mediaUrl: "/Images/gallery-7.jpeg",
     highlightText: "Hands-on collaboration session uniting developers, security researchers, and designers under the Tech Yuva banner."
   },
   {
@@ -136,7 +136,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "IMPACT",
     statValue: "250+ Attendees",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.47.jpeg",
+    mediaUrl: "/Images/gallery-8.jpeg",
     highlightText: "Keynote talks, open-source project showcases, and student founder pitch exhibitions in the central auditorium."
   },
   {
@@ -146,7 +146,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "LEADERSHIP",
     statValue: "Core Guild",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.49.jpeg",
+    mediaUrl: "/Images/gallery-9.jpeg",
     highlightText: "Student chapter leads and event coordinators planning upcoming hackathons, speaker series, and technical workshops."
   },
   {
@@ -156,7 +156,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     statLabel: "CODE RUNS",
     statValue: "Live Deployments",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.50.jpeg",
+    mediaUrl: "/Images/gallery-10.jpeg",
     highlightText: "Peer-to-peer coding sessions breaking down full-stack pipelines, database schemas, and AI application workflows."
   }
 ];
