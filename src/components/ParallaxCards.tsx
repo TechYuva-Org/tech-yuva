@@ -329,21 +329,23 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                     style={{
                       WebkitBackfaceVisibility: "hidden",
                       backfaceVisibility: "hidden",
-                      transform: "translateZ(0)"
+                      transform: "translateZ(0)",
+                      WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+                      isolation: "isolate"
                     }}
                   >
-                    {/* Cross-Platform High-Performance Image Cover Canvas */}
-                    <img
-                      src={card.mediaUrl}
-                      alt={card.title || `Capture ${index + 1}`}
-                      className="absolute inset-0 w-full h-full object-cover object-center select-none transition-transform duration-500 group-hover:scale-105"
+                    {/* CSS background-image: cover for pristine mobile & desktop display */}
+                    <div
+                      className="absolute inset-0 w-full h-full select-none transition-transform duration-500 group-hover:scale-105"
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        objectPosition: "center"
+                        backgroundImage: `url('${card.mediaUrl}')`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        WebkitBackgroundSize: "cover"
                       }}
-                      loading="eager"
+                      role="img"
+                      aria-label={card.title || `Capture ${index + 1}`}
                     />
 
                     {/* Glare Sheen Reflection on Center Card */}
@@ -429,16 +431,22 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
               key={index}
               onClick={() => setActiveModalIndex(index)}
               className="group relative cursor-pointer rounded-2xl overflow-hidden border border-white/10 bg-[#0a0d16] hover:border-cyan-400/50 transition-all duration-300 hover:shadow-[0_15px_35px_rgba(0,180,255,0.2)] h-[260px] sm:h-[280px]"
+              style={{
+                WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+                isolation: "isolate"
+              }}
             >
-              <img
-                src={card.mediaUrl}
-                alt={card.title || `Capture ${index + 1}`}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+              <div
+                className="absolute inset-0 w-full h-full group-hover:scale-105 transition-transform duration-500"
                 style={{
-                  objectFit: "cover",
-                  objectPosition: "center"
+                  backgroundImage: `url('${card.mediaUrl}')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  WebkitBackgroundSize: "cover"
                 }}
-                loading="lazy"
+                role="img"
+                aria-label={card.title || `Capture ${index + 1}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
               <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
