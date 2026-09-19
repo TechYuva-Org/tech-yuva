@@ -407,6 +407,18 @@ cms_versions
 5. **Multi-language support** — i18n for CMS content (V3).
 6. **Audit trail** — Log every CMS change with timestamp and author (V2).
 
+## 8. Gallery Presentation & Parallax 3D Vault
+
+The Past Events & Gallery section is rendered via `<ParallaxCards />` (`src/components/ParallaxCards.tsx`), implementing a 3D layered card display with mouse-driven parallax depth effect adhering to the React Bits Pro specification.
+
+### Data Source & Fallback
+1. **CMS Primary**: Fetched via `GET /api/cms/homepage` as `cmsData.gallery`.
+2. **Static Fallback**: `GALLERY_ITEMS` in `src/data.ts`, populated with verified high-resolution event captures stored in `public/Images/` (e.g. Paytm Headquarters Industrial Immersion, Community Builder Sprints, Keynote Summits).
+3. **Interactive Features**:
+   - Continuous 3D perspective field (`perspective: 2500px`) with mouse tilt and damping.
+   - Dynamic radial glare / sheen responding to cursor coordinates.
+   - Interactive Lightbox inspection modal displaying event title, badge, impact metric, and full description.
+
 ## Related Documents
 
 - `02_ARCHITECTURE.md` — API specification and server decomposition

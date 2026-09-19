@@ -77,7 +77,72 @@ export async function seedDefaultEvents() {
 
     // Mark previous completed hackathons appropriately
     await db.execute(sql`UPDATE events SET status = 'past' WHERE id = 'drop-hack-26' OR title ILIKE '%DROP HACK%'`);
-    console.log("[CMS-SEED] Default events seeded and synchronized.");
+
+    // Synchronize authentic gallery records into database
+    const defaultGallerySync = [
+      {
+        id: "g1",
+        title: "Paytm Headquarters Industry Immersion",
+        category: "Corporate Immersion",
+        statLabel: "Delegation",
+        statValue: "45+ Builders",
+        mediaType: "image" as const,
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.34.jpeg",
+        highlightText: "Tech Yuva builders visited the Paytm campus for exclusive architecture masterclasses and fintech engineering deep-dives.",
+        featured: true
+      },
+      {
+        id: "g2",
+        title: "Engineering Keynote & Fireside",
+        category: "Tech Masterclass",
+        statLabel: "Attendance",
+        statValue: "Full House",
+        mediaType: "image" as const,
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.36.jpeg",
+        highlightText: "Live technical discourse on scaling high-frequency transactional architectures and distributed system resiliency.",
+        featured: true
+      },
+      {
+        id: "g3",
+        title: "Community Builder Cohort Gathering",
+        category: "Campus Sprint",
+        statLabel: "Collaboration",
+        statValue: "100% Student-Led",
+        mediaType: "image" as const,
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.46.jpeg",
+        highlightText: "Hands-on collaboration session uniting developers, security researchers, and designers under Tech Yuva.",
+        featured: true
+      },
+      {
+        id: "g4",
+        title: "Grand Technology & Innovation Summit",
+        category: "Annual Convention",
+        statLabel: "Impact",
+        statValue: "250+ Attendees",
+        mediaType: "image" as const,
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.47.jpeg",
+        highlightText: "Keynote talks, open-source project showcases, and student founder pitch exhibitions in the central auditorium.",
+        featured: true
+      }
+    ];
+
+    for (const gal of defaultGallerySync) {
+      await db.insert(gallery).values(gal).onConflictDoUpdate({
+        target: gallery.id,
+        set: {
+          title: gal.title,
+          category: gal.category,
+          statLabel: gal.statLabel,
+          statValue: gal.statValue,
+          mediaType: gal.mediaType,
+          mediaUrl: gal.mediaUrl,
+          highlightText: gal.highlightText,
+          featured: gal.featured
+        }
+      });
+    }
+
+    console.log("[CMS-SEED] Default events and gallery synchronized.");
   } catch (err) {
     console.error("[CMS-SEED] Event seed error:", err);
   }
@@ -273,46 +338,46 @@ export async function seedCMSDatabase() {
     const defaultGallery = [
       {
         id: "g1",
-        title: "Grand Hackathon Stage",
-        category: "YuvaHack 2025",
-        statLabel: "Active Hackers",
-        statValue: "340+",
+        title: "Paytm Headquarters Industry Immersion",
+        category: "Corporate Immersion",
+        statLabel: "Delegation",
+        statValue: "45+ Builders",
         mediaType: "image" as const,
-        mediaUrl: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=600&auto=format&fit=crop",
-        highlightText: "Teams built 80+ working prototypes integrated in just 36 sleep-deprived hours.",
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.34.jpeg",
+        highlightText: "Tech Yuva builders visited the Paytm campus for exclusive architecture masterclasses and fintech engineering deep-dives.",
         featured: true
       },
       {
         id: "g2",
-        title: "Intense Pitch Arena",
-        category: "Startup Nights V2",
-        statLabel: "Founders Funded",
-        statValue: "4 Teams",
+        title: "Engineering Keynote & Fireside",
+        category: "Tech Masterclass",
+        statLabel: "Attendance",
+        statValue: "Full House",
         mediaType: "image" as const,
-        mediaUrl: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=600&auto=format&fit=crop",
-        highlightText: "Four student projects secured incubation grants totaling $25,000.",
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.36.jpeg",
+        highlightText: "Live technical discourse on scaling high-frequency transactional architectures and distributed system resiliency.",
         featured: true
       },
       {
         id: "g3",
-        title: "Hands-On GenAI Labs",
-        category: "Bootcamp V1",
-        statLabel: "Students Certified",
-        statValue: "180+",
+        title: "Community Builder Cohort Gathering",
+        category: "Campus Sprint",
+        statLabel: "Collaboration",
+        statValue: "100% Student-Led",
         mediaType: "image" as const,
-        mediaUrl: "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=600&auto=format&fit=crop",
-        highlightText: "Participants built client proxy endpoints utilizing server-side API configurations.",
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.46.jpeg",
+        highlightText: "Hands-on collaboration session uniting developers, security researchers, and designers under Tech Yuva.",
         featured: true
       },
       {
         id: "g4",
-        title: "Networking & Mentorship",
-        category: "Elite Mixer",
-        statLabel: "Industry Mentors",
-        statValue: "15+",
+        title: "Grand Technology & Innovation Summit",
+        category: "Annual Convention",
+        statLabel: "Impact",
+        statValue: "250+ Attendees",
         mediaType: "image" as const,
-        mediaUrl: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop",
-        highlightText: "Direct speed-mentorship linking corporate engineers to fresh student builders.",
+        mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.47.jpeg",
+        highlightText: "Keynote talks, open-source project showcases, and student founder pitch exhibitions in the central auditorium.",
         featured: true
       }
     ];

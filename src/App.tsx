@@ -19,6 +19,7 @@ import AdminCMS from "./components/AdminCMS";
 import BlurredImage from "./components/BlurredImage";
 import LoadingScreen from "./components/LoadingScreen";
 import EventDetailPage from "./components/EventDetailPage";
+import { ParallaxCards } from "./components/ParallaxCards";
 
 // Static Data
 import { 
@@ -924,75 +925,56 @@ export default function App() {
         {/* SECTION 6 & 7: PAST EVENTS GALLERY & COMMUNITY IMPACT METRICS */}
         <motion.section 
           ref={mainGalleryRef} 
-          className="py-12 px-4 space-y-16" 
+          className="py-14 px-4 space-y-12" 
           id="gallery-impact-section"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Gallery Left text column */}
-            <div className="lg:col-span-4 space-y-6">
-              <div>
-                <span className="text-xs font-mono text-emerald-green uppercase tracking-[0.2em] font-semibold block">COHORT LOGS</span>
-                <h2 className="text-3xl md:text-4xl font-display uppercase tracking-tight text-text-primary font-bold leading-tight">
-                  PAST HIGHLIGHTS & GRAND GALLERY
-                </h2>
-              </div>
+          {/* Header Row */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-white/5">
+            <div className="space-y-3 max-w-2xl">
+              <span className="text-xs font-mono text-emerald-green uppercase tracking-[0.2em] font-semibold block">
+                COHORT LOGS • 3D PARALLAX VAULT
+              </span>
+              <h2 className="text-3xl md:text-5xl font-display uppercase tracking-tight text-text-primary font-bold leading-tight">
+                PAST HIGHLIGHTS & GRAND GALLERY
+              </h2>
               <p className="text-sm text-secondary-text font-sans font-light leading-relaxed">
-                Explore real historic milestones completed by community sub-teams during our 2025 and 2026 build periods. Check verification metrics on-site.
+                Explore real historic milestones and industry immersions completed by community sub-teams during our 2025 and 2026 build periods. Move your cursor to experience the 3D depth field, or click any card to inspect the visual archive.
               </p>
-              
-              <div className="p-4 rounded border border-border-color bg-brand-bg-sec/50 space-y-3 font-mono">
-                <p className="text-[10px] uppercase text-secondary-text tracking-wider font-bold">Consolidated Track Records</p>
-                <div className="space-y-1 text-xs">
-                  <p className="flex justify-between"><span>⭐ Google Cloud Sprints</span> <span className="text-text-primary">Active (20)</span></p>
-                  <p className="flex justify-between"><span>🧩 MVPs Spawned</span> <span className="text-text-primary">80+ Prototypes</span></p>
-                  <p className="flex justify-between"><span>💰 Grant Funding</span> <span className="text-text-primary">$25K Secured</span></p>
-                </div>
-              </div>
             </div>
 
-            {/* Gallery Right Horizontal Layout cards */}
-            <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {(cmsData?.gallery && cmsData.gallery.length > 0 ? cmsData.gallery : GALLERY_ITEMS).map((item: any) => (
-                <div 
-                  key={item.id} 
-                  className="group relative rounded-lg overflow-hidden border border-border-color bg-brand-bg-sec min-h-[220px] shadow-lg"
-                >
-                  
-                  {/* Photo Canvas render with referrer check and blurred loading placeholder */}
-                  <BlurredImage 
-                    src={item.mediaUrl} 
-                    alt={item.title} 
-                    referrerPolicy="no-referrer"
-                  />
-
-                  {/* Dark mask filter gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-brand-bg/40 to-transparent flex flex-col justify-end p-5" />
-
-                  {/* Highlight text rendering on group-hover */}
-                  <div className="absolute inset-x-0 bottom-0 p-5 translate-y-3 group-hover:translate-y-0 transition-transform duration-300 flex flex-col gap-1.5 select-none animate-fade-in">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-mono text-[10px] text-neon-blue font-semibold uppercase">{item.event}</span>
-                      <span className="font-mono text-emerald-green font-bold text-xs bg-emerald-green/10 px-2 py-0.5 rounded border border-emerald-green/20">
-                        {item.statLabel || item.badge || "METRIC"}: {item.statValue || "100%"}
-                      </span>
-                    </div>
-                    <h4 className="text-sm font-sans font-bold text-text-primary uppercase">{item.title}</h4>
-                    <p className="text-[10px] text-secondary-text leading-snug opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      {item.highlightText || item.description}
-                    </p>
-                  </div>
-
-                </div>
-              ))}
+            {/* Consolidated Track Records pill */}
+            <div className="p-4 rounded-xl border border-border-color bg-brand-bg-sec/50 space-y-2.5 font-mono text-xs w-full md:w-auto min-w-[280px]">
+              <p className="text-[10px] uppercase text-secondary-text tracking-wider font-bold">Consolidated Track Records</p>
+              <div className="space-y-1 text-xs">
+                <p className="flex justify-between gap-4"><span>⭐ Paytm Immersion & Sprints</span> <span className="text-text-primary font-bold">45+ Builders</span></p>
+                <p className="flex justify-between gap-4"><span>🧩 MVPs & Prototypes Spawned</span> <span className="text-text-primary font-bold">80+ Projects</span></p>
+                <p className="flex justify-between gap-4"><span>⚡ Tech Talks & Conventions</span> <span className="text-emerald-green font-bold">250+ Attendees</span></p>
+              </div>
             </div>
           </div>
 
+          {/* 3D Parallax Cards Grid */}
+          <div className="w-full">
+            <ParallaxCards
+              items={
+                cmsData?.gallery && Array.isArray(cmsData.gallery) && cmsData.gallery.some((item: any) => !item.mediaUrl?.includes("unsplash.com"))
+                  ? cmsData.gallery.filter((item: any) => !item.mediaUrl?.includes("unsplash.com"))
+                  : GALLERY_ITEMS
+              }
+              cardCount={9}
+              perspective={2500}
+              mouseSensitivity={3.5}
+              cardHeight={320}
+              animationDuration={1.2}
+              enableMagneticAttraction={true}
+              magneticStrength={25}
+              className="py-2"
+            />
+          </div>
         </motion.section>
 
         {/* IMMERSIVE BENTO TICKER */}
