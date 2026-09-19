@@ -11,12 +11,82 @@ import {
   sponsors, 
   testimonials, 
   announcements,
-  analyticsSnapshots
+  analyticsSnapshots,
+  events
 } from "./schema.ts";
 import { sql } from "drizzle-orm";
 
+export async function seedDefaultEvents() {
+  try {
+    const cyberEvent = {
+      id: "cyber-intelligence-digital-defense",
+      title: "Cyber Intelligence & Digital Defense",
+      category: "workshop" as const,
+      date: "2026-09-23",
+      rawDate: "September 23, 2026",
+      time: "2:00 PM – 3:30 PM",
+      venue: "Auditorium, IMS Ghaziabad University Courses Campus (IMSUC), Ghaziabad",
+      tags: ["Workshop", "Cybersecurity", "Digital Defense", "Intelligence"],
+      description: "Explore the evolving world of cyber threats and learn how intelligence and technology work together to build a safer digital future.",
+      status: "upcoming" as const,
+      image: "/cyber-defense-poster.jpg",
+      spotsTotal: 100,
+      spotsLeft: 100,
+      featured: true,
+      metadata: {
+        slug: "cyber-intelligence-digital-defense",
+        tagline: "Detect • Analyze • Defend",
+        speaker: {
+          name: "Mr. Vikas Kumar",
+          designation: [
+            "Senior Forensic Expert",
+            "Cybersecurity Professional",
+            "Coordinator (Amroha Police)"
+          ],
+          photo: "/vikas-kumar.jpg"
+        },
+        highlights: [
+          "Live case studies & real-world examples",
+          "Cyber threat analysis & investigation techniques",
+          "Tools, technologies & defense strategies",
+          "Q&A session & interactive discussion"
+        ],
+        closingMessage: "Because Digital Security Is a Shared Responsibility.",
+        registrationOpen: false,
+        registrationMessage: "Registration details coming soon"
+      }
+    };
+
+    await db.insert(events).values(cyberEvent).onConflictDoUpdate({
+      target: events.id,
+      set: {
+        title: cyberEvent.title,
+        category: cyberEvent.category,
+        date: cyberEvent.date,
+        rawDate: cyberEvent.rawDate,
+        time: cyberEvent.time,
+        venue: cyberEvent.venue,
+        tags: cyberEvent.tags,
+        description: cyberEvent.description,
+        status: cyberEvent.status,
+        image: cyberEvent.image,
+        metadata: cyberEvent.metadata,
+        featured: cyberEvent.featured
+      }
+    });
+
+    // Mark previous completed hackathons appropriately
+    await db.execute(sql`UPDATE events SET status = 'past' WHERE id = 'drop-hack-26' OR title ILIKE '%DROP HACK%'`);
+    console.log("[CMS-SEED] Default events seeded and synchronized.");
+  } catch (err) {
+    console.error("[CMS-SEED] Event seed error:", err);
+  }
+}
+
 export async function seedCMSDatabase() {
   try {
+    await seedDefaultEvents();
+
     console.log("[CMS-SEED] Checking site settings population...");
     const existingSettings = await db.execute(sql`SELECT count(*) FROM site_settings`);
     const count = Number(existingSettings.rows[0]?.count || 0);

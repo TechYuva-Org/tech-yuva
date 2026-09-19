@@ -50,6 +50,7 @@ export const events = pgTable("events", {
   spotsTotal: integer("spots_total").default(50).notNull(),
   spotsLeft: integer("spots_left").default(50).notNull(),
   featured: boolean("featured").default(false).notNull(),
+  metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull()
 });

@@ -263,9 +263,23 @@ async function startServer() {
     }
   });
 
+  app.get("/api/events/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const getEvent = await db.select().from(events).where(eq(events.id, id)).limit(1);
+      if (getEvent.length === 0) {
+        return res.status(404).json({ error: "Event not found." });
+      }
+      return res.json(getEvent[0]);
+    } catch (error: any) {
+      console.error("Fetch single event failure:", error);
+      return res.status(500).json({ error: "Database query failed. Please try again later." });
+    }
+  });
+
   app.post("/api/events", requireAdmin, async (req, res) => {
     try {
-      const { title, category, rawDate, date, time, venue, description, tags, status, spotsLeft, featured } = req.body;
+      const { title, category, rawDate, date, time, venue, description, tags, status, spotsLeft, featured, image, externalLink, metadata } = req.body;
       if (!title || !category || !rawDate || !date || !time || !venue || !description) {
         return res.status(400).json({ error: "Essential event fields are missing." });
       }
@@ -273,7 +287,7 @@ async function startServer() {
       const [newEvent] = await db
         .insert(events)
         .values({
-          id: `e-${Date.now()}`,
+          id: req.body.id || `e-${Date.now()}`,
           title,
           category,
           rawDate,
@@ -284,7 +298,10 @@ async function startServer() {
           tags: tags || [],
           status: status || "upcoming",
           spotsLeft: spotsLeft !== undefined ? Number(spotsLeft) : 50,
-          featured: !!featured
+          featured: !!featured,
+          image: image || null,
+          externalLink: externalLink || null,
+          metadata: metadata || null
         })
         .returning();
 
@@ -316,7 +333,10 @@ async function startServer() {
         tags: req.body.tags !== undefined ? req.body.tags : oldEvent.tags,
         status: req.body.status !== undefined ? req.body.status : oldEvent.status,
         spotsLeft: req.body.spotsLeft !== undefined ? Number(req.body.spotsLeft) : oldEvent.spotsLeft,
-        featured: req.body.featured !== undefined ? !!req.body.featured : oldEvent.featured
+        featured: req.body.featured !== undefined ? !!req.body.featured : oldEvent.featured,
+        image: req.body.image !== undefined ? req.body.image : oldEvent.image,
+        externalLink: req.body.externalLink !== undefined ? req.body.externalLink : oldEvent.externalLink,
+        metadata: req.body.metadata !== undefined ? req.body.metadata : oldEvent.metadata
       };
 
       const [updatedEvent] = await db

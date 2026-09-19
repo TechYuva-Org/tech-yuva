@@ -18,6 +18,7 @@ import AdminTerminal from "./components/AdminTerminal";
 import AdminCMS from "./components/AdminCMS";
 import BlurredImage from "./components/BlurredImage";
 import LoadingScreen from "./components/LoadingScreen";
+import EventDetailPage from "./components/EventDetailPage";
 
 // Static Data
 import { 
@@ -38,6 +39,39 @@ export default function App() {
       return false;
     }
   });
+
+  // Slug-based client-side routing for event detail pages
+  const [activeEventSlug, setActiveEventSlug] = useState<string | null>(() => {
+    const path = window.location.pathname;
+    const match = path.match(/^\/events\/([^/]+)$/);
+    return match ? match[1] : null;
+  });
+
+  const handleViewEventDetail = (slug: string) => {
+    setActiveEventSlug(slug);
+    window.history.pushState({}, "", `/events/${slug}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleBackFromEventDetail = () => {
+    setActiveEventSlug(null);
+    window.history.pushState({}, "", "/");
+    // Scroll to events section
+    setTimeout(() => {
+      document.getElementById("upcoming-events-section")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
+  // Handle browser back/forward
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const match = path.match(/^\/events\/([^/]+)$/);
+      setActiveEventSlug(match ? match[1] : null);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   // Modal states
   const [selectedEventForReg, setSelectedEventForReg] = useState<EventItem | null>(null);
@@ -194,7 +228,18 @@ export default function App() {
   return (
     <>
     {!loadingDone && <LoadingScreen onComplete={() => setLoadingDone(true)} />}
-    <div className={`min-h-[100dvh] bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none ${!loadingDone ? 'invisible' : 'animate-fade-in'}`}>
+
+    {/* EVENT DETAIL ROUTE */}
+    {loadingDone && activeEventSlug && (() => {
+      const allEventsForDetail = [...dbEvents, ...UPCOMING_EVENTS];
+      const found = allEventsForDetail.find(e =>
+        (e.metadata as any)?.slug === activeEventSlug || e.id === activeEventSlug
+      );
+      if (!found) return null;
+      return <EventDetailPage event={found} onBack={handleBackFromEventDetail} />;
+    })()}
+
+    <div className={`min-h-[100dvh] bg-brand-bg text-text-primary relative grid-mesh selection:bg-neon-blue/20 select-none ${(!loadingDone || activeEventSlug) ? 'hidden' : 'animate-fade-in'}`}>
       
       {/* Dynamic Schedulable Announcements Banner from Database CMS */}
       {cmsData?.announcements && cmsData.announcements.filter((ann: any) => ann.enabled).map((ann: any) => {
@@ -712,7 +757,7 @@ export default function App() {
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between gap-2">
                         <div className="font-mono text-[10px] text-secondary-text">
                           Seats Remaining: <span className="text-saffron font-bold text-xs">{evt.spotsLeft !== undefined ? evt.spotsLeft : 25}</span>
                         </div>
@@ -725,6 +770,14 @@ export default function App() {
                           >
                             SECURE PASS
                           </a>
+                        ) : (evt.metadata as any)?.registrationOpen === false ? (
+                          <button
+                            type="button"
+                            onClick={() => handleViewEventDetail((evt.metadata as any)?.slug || evt.id)}
+                            className="px-4 py-1.5 bg-[#00BFFF]/10 backdrop-blur-xl border border-[#00BFFF]/30 hover:bg-[#00BFFF]/20 text-[#00BFFF] text-xs font-mono font-bold uppercase tracking-widest rounded-lg transition-all cursor-pointer"
+                          >
+                            VIEW DETAILS
+                          </button>
                         ) : (
                           <button
                             type="button"

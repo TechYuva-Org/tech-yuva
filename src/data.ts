@@ -1,6 +1,44 @@
 import { EventItem, GalleryItem, Sponsor, Testimonial } from "./types";
 
-export const UPCOMING_EVENTS: EventItem[] = [];
+export const UPCOMING_EVENTS: EventItem[] = [
+  {
+    id: "cyber-intelligence-digital-defense",
+    title: "Cyber Intelligence & Digital Defense",
+    category: "workshop",
+    date: "2026-09-23",
+    rawDate: "September 23, 2026",
+    time: "2:00 PM – 3:30 PM",
+    venue: "Auditorium, IMS Ghaziabad University Courses Campus (IMSUC), Ghaziabad",
+    tags: ["Workshop", "Cybersecurity", "Digital Defense", "Intelligence"],
+    description: "Explore the evolving world of cyber threats and learn how intelligence and technology work together to build a safer digital future.",
+    status: "upcoming",
+    spotsLeft: 100,
+    featured: true,
+    image: "/cyber-defense-poster.jpg",
+    metadata: {
+      slug: "cyber-intelligence-digital-defense",
+      tagline: "Detect • Analyze • Defend",
+      speaker: {
+        name: "Mr. Vikas Kumar",
+        designation: [
+          "Senior Forensic Expert",
+          "Cybersecurity Professional",
+          "Coordinator (Amroha Police)"
+        ],
+        photo: "/vikas-kumar.jpg"
+      },
+      highlights: [
+        "Live case studies & real-world examples",
+        "Cyber threat analysis & investigation techniques",
+        "Tools, technologies & defense strategies",
+        "Q&A session & interactive discussion"
+      ],
+      closingMessage: "Because Digital Security Is a Shared Responsibility.",
+      registrationOpen: false,
+      registrationMessage: "Registration details coming soon"
+    }
+  }
+];
 
 export const PAST_EVENTS: EventItem[] = [
   {

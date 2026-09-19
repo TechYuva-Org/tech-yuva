@@ -1,18 +1,35 @@
+export interface EventSpeaker {
+  name: string;
+  designation: string[];
+  photo?: string;
+}
+
+export interface EventMetadata {
+  slug?: string;
+  tagline?: string;
+  speaker?: EventSpeaker;
+  highlights?: string[];
+  closingMessage?: string;
+  registrationOpen?: boolean;
+  registrationMessage?: string;
+}
+
 export interface EventItem {
   id: string;
   title: string;
-  category: "hackathon" | "workshop" | "talk" | "bootcamp" | "startup";
+  category: "hackathon" | "workshop" | "talk" | "bootcamp" | "startup" | "other";
   date: string;
   rawDate: string;
   time: string;
   venue: string;
   tags: string[];
   description: string;
-  status: "upcoming" | "past";
+  status: "upcoming" | "past" | "draft" | "completed" | "cancelled";
   spotsLeft?: number;
   featured?: boolean;
-  externalLink?: string;
-  image?: string;
+  externalLink?: string | null;
+  image?: string | null;
+  metadata?: EventMetadata | null;
 }
 
 export interface GalleryItem {

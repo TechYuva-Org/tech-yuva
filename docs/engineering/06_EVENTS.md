@@ -1,8 +1,8 @@
 # 06 — EVENTS
 
 > **Tech Yuva Engineering Bible** — Document 7 of 13  
-> **Status:** Draft v1.0  
-> **Last Updated:** 2026-07-12  
+> **Status:** Active v1.1  
+> **Last Updated:** 2026-09-19  
 > **Owner:** Engineering  
 > **Classification:** Internal — Engineering  
 > **Prerequisites:** [03_DATABASE.md](./03_DATABASE.md), [04_AUTH_SYSTEM.md](./04_AUTH_SYSTEM.md)
@@ -176,7 +176,7 @@ Certificates must be publicly verifiable by anyone (e.g., a recruiter clicking a
 | `GET` | `/api/events` | None | List upcoming/past events (paginated) |
 | `GET` | `/api/events/:id` | None | Get specific event details |
 | `POST` | `/api/events` | Admin | Create a new event |
-| `PATCH`| `/api/events/:id` | Admin | Update event details |
+| `PATCH`| `/api/events/:id` | Admin | Update event details (supports `image`, `externalLink`, `metadata`) |
 | `DELETE`| `/api/events/:id`| Admin | Delete event (cascades) |
 | `GET` | `/api/events/:id/registrations` | Admin | List attendees for an event |
 | `POST` | `/api/events/:id/complete` | Admin | Lock event, issue certs |
@@ -213,3 +213,62 @@ Currently, when `spots_left == 0`, registration fails. In V2, we implement a wai
 - [03_DATABASE.md](./03_DATABASE.md) (ERD and indexing for events)
 - [04_AUTH_SYSTEM.md](./04_AUTH_SYSTEM.md) (Auth required for event management)
 - [07_ADMIN.md](./07_ADMIN.md) (Admin UI for managing the event lifecycle)
+
+---
+
+## 7. Event `metadata` Field (JSONB)
+
+The `events` table carries a nullable `metadata JSONB` column for rich content that does not belong in the flat schema. This is the canonical location for all non-core event data — speaker bios, slugs, highlights, registration state, etc.
+
+**Never** store rich-content exclusively in `src/data.ts`. `src/data.ts` is a **read-only fallback** for when the database is unreachable.
+
+### Schema (TypeScript: `EventMetadata`)
+
+```typescript
+interface EventSpeaker {
+  name: string;
+  designation: string[];  // ordered list of roles
+  photo?: string;         // absolute public path e.g. "/vikas-kumar.jpg"
+}
+
+interface EventMetadata {
+  slug?: string;              // URL segment: /events/<slug>
+  tagline?: string;           // Short tagline shown on card & detail page
+  speaker?: EventSpeaker;
+  highlights?: string[];      // Key agenda items / session highlights
+  closingMessage?: string;
+  registrationOpen?: boolean; // EXPLICIT flag. false = show 'VIEW DETAILS', true = show 'SECURE PASS'
+  registrationMessage?: string; // Displayed when registrationOpen is false
+}
+```
+
+> [!IMPORTANT]
+> `registrationOpen` must be **explicitly set**. The frontend never infers registration status from dates or spotsLeft. If omitted, fallback assumes registration is open.
+
+### Slug Routing
+
+Client-side routing resolves event detail pages via `window.history.pushState` in `src/App.tsx`. No additional router dependency is required.
+
+- Card CTA `VIEW DETAILS` button → `/events/<slug>`
+- Full detail page rendered by `src/components/EventDetailPage.tsx`
+- SPA catch-all in `server.ts` (`app.get("*", ...)`) ensures browser refresh works in production.
+
+### Seeding rich events
+
+All canonical events — including rich metadata — are seeded via `seedDefaultEvents()` in `src/db/seedCMS.ts` using `onConflictDoUpdate`. This runs on every server start (before the CMS idempotency check), keeping the database in sync.
+
+```typescript
+await db.insert(events).values(cyberEvent).onConflictDoUpdate({
+  target: events.id,
+  set: { title, category, date, rawDate, time, venue, tags, description, status, image, metadata, featured }
+});
+```
+
+---
+
+## 8. Implemented Events Reference
+
+| ID | Title | Date | Status | Has Metadata |
+|----|-------|------|--------|--------------|
+| `cyber-intelligence-digital-defense` | Cyber Intelligence & Digital Defense | 23 Sep 2026 | `upcoming` | ✅ Speaker, Highlights, Slug |
+| `9IsWSVoO-DLaVO7EdP0Rq` | DROP HACK'26 | 29 Aug 2026 | `past` | ❌ (community partner event) |
