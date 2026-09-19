@@ -957,7 +957,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* 3D Parallax Cards Grid */}
+          {/* 3D Parallax Cards Stage */}
           <div className="w-full">
             <ParallaxCards
               items={
@@ -965,14 +965,10 @@ export default function App() {
                   ? cmsData.gallery.filter((item: any) => !item.mediaUrl?.includes("unsplash.com"))
                   : GALLERY_ITEMS
               }
-              cardCount={9}
-              perspective={2500}
-              mouseSensitivity={3.5}
-              cardHeight={320}
-              animationDuration={1.2}
-              enableMagneticAttraction={true}
-              magneticStrength={25}
-              className="py-2"
+              cardCount={10}
+              perspective={1400}
+              mouseSensitivity={2.5}
+              className="my-2"
             />
           </div>
         </motion.section>

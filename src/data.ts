@@ -60,67 +60,17 @@ export const PAST_EVENTS: EventItem[] = [
 
 export const GALLERY_ITEMS: GalleryItem[] = [
   {
-    id: "gal-paytm-delegation-1",
-    title: "Paytm Headquarters Industry Immersion",
-    event: "Corporate Immersion",
-    statLabel: "DELEGATION",
-    statValue: "45+ Builders",
+    id: "gal-cohort-portrait-1",
+    title: "Tech Yuva Community Hall of Fame",
+    event: "Milestone Log",
+    statLabel: "COMMUNITY",
+    statValue: "500+ Strong",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.34.jpeg",
-    highlightText: "Tech Yuva builders visited the Paytm campus for exclusive architecture masterclasses and fintech engineering deep-dives."
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.11.40.jpeg",
+    highlightText: "Celebrating community milestones, student contributors, and hackathon champions building India's tech future."
   },
   {
-    id: "gal-paytm-keynote-2",
-    title: "Engineering Keynote & Leadership Fireside",
-    event: "Tech Masterclass",
-    statLabel: "ATTENDANCE",
-    statValue: "Full House",
-    mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.36.jpeg",
-    highlightText: "Live technical discourse on scaling high-frequency transactional architectures and distributed system resiliency."
-  },
-  {
-    id: "gal-campus-cohort-3",
-    title: "Community Builder Cohort Gathering",
-    event: "Campus Sprint",
-    statLabel: "COLLABORATION",
-    statValue: "100% Student-Led",
-    mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.46.jpeg",
-    highlightText: "Hands-on collaboration session uniting developers, security researchers, and designers under the Tech Yuva banner."
-  },
-  {
-    id: "gal-auditorium-summit-4",
-    title: "Grand Technology & Innovation Summit",
-    event: "Annual Convention",
-    statLabel: "IMPACT",
-    statValue: "250+ Attendees",
-    mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.47.jpeg",
-    highlightText: "Keynote talks, open-source project showcases, and student founder pitch exhibitions in the central auditorium."
-  },
-  {
-    id: "gal-core-team-5",
-    title: "Tech Yuva Core Operations Council",
-    event: "Leadership Sprint",
-    statLabel: "LEADERSHIP",
-    statValue: "Core Guild",
-    mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.49.jpeg",
-    highlightText: "Student chapter leads and event coordinators planning upcoming hackathons, speaker series, and technical workshops."
-  },
-  {
-    id: "gal-workshop-session-6",
-    title: "Interactive Coding & System Design Lab",
-    event: "Hands-on Workshop",
-    statLabel: "CODE RUNS",
-    statValue: "Live Deployments",
-    mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.50.jpeg",
-    highlightText: "Peer-to-peer coding sessions breaking down full-stack pipelines, database schemas, and AI application workflows."
-  },
-  {
-    id: "gal-delegates-stage-7",
+    id: "gal-delegates-stage-2",
     title: "Official Delegation Stage Presentation",
     event: "Industry Exchange",
     statLabel: "PARTNERSHIP",
@@ -130,7 +80,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     highlightText: "Tech Yuva members presenting technical initiatives and student innovation projects to industry representatives."
   },
   {
-    id: "gal-mentorship-loop-8",
+    id: "gal-mentorship-loop-3",
     title: "Executive Mentorship & Q&A Round",
     event: "Founder Sync",
     statLabel: "INSIGHTS",
@@ -140,7 +90,27 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     highlightText: "Deep-dive career guidance, code reviews, and industry roadmap insights directly from senior practitioners."
   },
   {
-    id: "gal-hallway-track-9",
+    id: "gal-paytm-delegation-4",
+    title: "Paytm Headquarters Industry Immersion",
+    event: "Corporate Immersion",
+    statLabel: "DELEGATION",
+    statValue: "45+ Builders",
+    mediaType: "image",
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.34.jpeg",
+    highlightText: "Tech Yuva builders visited the Paytm campus for exclusive architecture masterclasses and fintech engineering deep-dives."
+  },
+  {
+    id: "gal-paytm-keynote-5",
+    title: "Engineering Keynote & Leadership Fireside",
+    event: "Tech Masterclass",
+    statLabel: "ATTENDANCE",
+    statValue: "Full House",
+    mediaType: "image",
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.36.jpeg",
+    highlightText: "Live technical discourse on scaling high-frequency transactional architectures and distributed system resiliency."
+  },
+  {
+    id: "gal-hallway-track-6",
     title: "The Hallway Track: Network & Ideate",
     event: "Networking Loop",
     statLabel: "NETWORKING",
@@ -150,14 +120,44 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     highlightText: "Spontaneous problem solving, hackathon team formation, and startup ideation during conference intermissions."
   },
   {
-    id: "gal-cohort-portrait-10",
-    title: "Tech Yuva Community Hall of Fame",
-    event: "Milestone Log",
-    statLabel: "COMMUNITY",
-    statValue: "500+ Strong",
+    id: "gal-campus-cohort-7",
+    title: "Community Builder Cohort Gathering",
+    event: "Campus Sprint",
+    statLabel: "COLLABORATION",
+    statValue: "100% Student-Led",
     mediaType: "image",
-    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.11.40.jpeg",
-    highlightText: "Celebrating community milestones, student contributors, and hackathon champions building India's tech future."
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.46.jpeg",
+    highlightText: "Hands-on collaboration session uniting developers, security researchers, and designers under the Tech Yuva banner."
+  },
+  {
+    id: "gal-auditorium-summit-8",
+    title: "Grand Technology & Innovation Summit",
+    event: "Annual Convention",
+    statLabel: "IMPACT",
+    statValue: "250+ Attendees",
+    mediaType: "image",
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.47.jpeg",
+    highlightText: "Keynote talks, open-source project showcases, and student founder pitch exhibitions in the central auditorium."
+  },
+  {
+    id: "gal-core-team-9",
+    title: "Tech Yuva Core Operations Council",
+    event: "Leadership Sprint",
+    statLabel: "LEADERSHIP",
+    statValue: "Core Guild",
+    mediaType: "image",
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.49.jpeg",
+    highlightText: "Student chapter leads and event coordinators planning upcoming hackathons, speaker series, and technical workshops."
+  },
+  {
+    id: "gal-workshop-session-10",
+    title: "Interactive Coding & System Design Lab",
+    event: "Hands-on Workshop",
+    statLabel: "CODE RUNS",
+    statValue: "Live Deployments",
+    mediaType: "image",
+    mediaUrl: "/Images/WhatsApp%20Image%202026-09-06%20at%2020.12.50.jpeg",
+    highlightText: "Peer-to-peer coding sessions breaking down full-stack pipelines, database schemas, and AI application workflows."
   }
 ];
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Maximize2, X, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { X, ZoomIn } from "lucide-react";
 
 export interface ParallaxCardItem {
   mediaUrl: string;
@@ -17,8 +17,6 @@ export interface ParallaxCardsProps {
   cardCount?: number;
   perspective?: number;
   mouseSensitivity?: number;
-  cardWidth?: number | string;
-  cardHeight?: number | string;
   animationDuration?: number;
   enableDepthFog?: boolean;
   fogIntensity?: number;
@@ -28,443 +26,313 @@ export interface ParallaxCardsProps {
   className?: string;
 }
 
+// Spatial placement coordinates mimicking the React Bits Pro 3D scatter layout
+const CARD_POSITIONS = [
+  // 0: Top-Left Prominent Foreground Card
+  { top: "6%", left: "4%", width: "32%", height: "43%", depth: 55, rotateZ: -1.2 },
+  // 1: Top Mid-Left (Midground)
+  { top: "8%", left: "39%", width: "21%", height: "30%", depth: 15, rotateZ: 0.8 },
+  // 2: Top Right Prominent Foreground Card
+  { top: "5%", left: "64%", width: "30%", height: "42%", depth: 50, rotateZ: 1.0 },
+  // 3: Deep Background Card (Behind left)
+  { top: "31%", left: "35%", width: "12%", height: "18%", depth: -35, rotateZ: -1.5 },
+  // 4: Deep Background Card (Center-Right)
+  { top: "32%", left: "60%", width: "12%", height: "17%", depth: -30, rotateZ: 1.2 },
+  // 5: Mid-Right Midground Card
+  { top: "45%", left: "74%", width: "20%", height: "28%", depth: 25, rotateZ: -0.6 },
+  // 6: Bottom Left Prominent Foreground Card
+  { top: "54%", left: "3%", width: "28%", height: "40%", depth: 45, rotateZ: 0.8 },
+  // 7: Deep Background Card (Bottom Mid-Left)
+  { top: "56%", left: "29%", width: "13%", height: "19%", depth: -20, rotateZ: -0.8 },
+  // 8: Bottom Center Midground Card
+  { top: "66%", left: "42%", width: "16%", height: "24%", depth: 20, rotateZ: 1.0 },
+  // 9: Bottom Right Prominent Foreground Card
+  { top: "60%", left: "69%", width: "26%", height: "36%", depth: 40, rotateZ: -0.5 },
+];
+
 export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
   images = [],
   items,
   cardCount,
-  perspective = 2500,
-  mouseSensitivity = 3,
-  cardWidth,
-  cardHeight = 320,
-  animationDuration = 1.2,
-  enableDepthFog = false,
-  fogIntensity = 1,
-  enableMagneticAttraction = false,
-  magneticStrength = 50,
+  perspective = 1400,
+  mouseSensitivity = 2.5,
+  animationDuration = 0.8,
   onCardClick,
   className = ""
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 }); // -1 to 1
-  const [isHovered, setIsHovered] = useState(false);
-  const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
+  const [activeCardIndex, setActiveCardIndex] = useState<number | null>(null);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
 
-  // Normalize data between images and items
+  // Normalize all items (guaranteeing all 10 images are loaded in order)
   const cardList: ParallaxCardItem[] = React.useMemo(() => {
     if (items && items.length > 0) {
-      return items.slice(0, cardCount || Math.min(items.length, 12));
+      const maxCount = cardCount ? Math.min(cardCount, items.length) : items.length;
+      return items.slice(0, maxCount);
     }
-    return images.slice(0, cardCount || Math.min(images.length, 12)).map((img, i) => ({
+    const maxCount = cardCount ? Math.min(cardCount, images.length) : images.length;
+    return images.slice(0, maxCount).map((img, i) => ({
       mediaUrl: img,
-      title: `Event Capture #${i + 1}`,
+      title: `Archive Record #${i + 1}`,
       event: "Tech Yuva Event",
-      statLabel: "ARCHIVE",
+      statLabel: "LOG",
       statValue: "VERIFIED",
-      highlightText: "Official visual record from Tech Yuva community archives."
+      highlightText: "Authentic photographic capture from community archives."
     }));
   }, [images, items, cardCount]);
 
-  // Smooth mouse tracking with requestAnimationFrame
-  const mouseTargetRef = useRef({ x: 0, y: 0 });
+  // RequestAnimationFrame lerp mouse damping
+  const targetMouseRef = useRef({ x: 0, y: 0 });
   const animFrameRef = useRef<number | null>(null);
 
-  const updateMouse = useCallback(() => {
+  const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor;
+
+  const updateMousePhysics = useCallback(() => {
     setMousePos((prev) => {
-      const dx = mouseTargetRef.current.x - prev.x;
-      const dy = mouseTargetRef.current.y - prev.y;
-      // Damping factor
-      const damping = 0.08;
-      if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
-        return mouseTargetRef.current;
+      const newX = lerp(prev.x, targetMouseRef.current.x, 0.08);
+      const newY = lerp(prev.y, targetMouseRef.current.y, 0.08);
+      if (Math.abs(newX - prev.x) < 0.0005 && Math.abs(newY - prev.y) < 0.0005) {
+        return prev;
       }
-      return {
-        x: prev.x + dx * damping,
-        y: prev.y + dy * damping
-      };
+      return { x: newX, y: newY };
     });
-    animFrameRef.current = requestAnimationFrame(updateMouse);
+    animFrameRef.current = requestAnimationFrame(updateMousePhysics);
   }, []);
 
   useEffect(() => {
-    animFrameRef.current = requestAnimationFrame(updateMouse);
+    animFrameRef.current = requestAnimationFrame(updateMousePhysics);
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [updateMouse]);
+  }, [updateMousePhysics]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || activeCardIndex !== null) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1; // -1 to 1
-    const y = ((e.clientY - rect.top) / rect.height) * 2 - 1; // -1 to 1
-    mouseTargetRef.current = {
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+    targetMouseRef.current = {
       x: Math.max(-1, Math.min(1, x)),
       y: Math.max(-1, Math.min(1, y))
     };
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
   const handleMouseLeave = () => {
-    setIsHovered(false);
-    mouseTargetRef.current = { x: 0, y: 0 };
+    targetMouseRef.current = { x: 0, y: 0 };
+    setHoveredCardIndex(null);
   };
 
-  // Keyboard navigation for modal
+  const handleCardSelect = (index: number) => {
+    if (activeCardIndex === index) {
+      setActiveCardIndex(null);
+    } else {
+      setActiveCardIndex(index);
+      if (onCardClick) onCardClick(index);
+    }
+  };
+
+  // Keyboard navigation
   useEffect(() => {
-    if (activeModalIndex === null) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveModalIndex(null);
-      if (e.key === "ArrowLeft") {
-        setActiveModalIndex((prev) =>
-          prev !== null ? (prev > 0 ? prev - 1 : cardList.length - 1) : null
-        );
-      }
-      if (e.key === "ArrowRight") {
-        setActiveModalIndex((prev) =>
-          prev !== null ? (prev < cardList.length - 1 ? prev + 1 : 0) : null
-        );
-      }
+      if (e.key === "Escape") setActiveCardIndex(null);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeModalIndex, cardList.length]);
+  }, []);
 
   return (
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative w-full ${className}`}
+      className={`relative w-full h-[620px] sm:h-[720px] md:h-[840px] lg:h-[900px] overflow-hidden rounded-3xl bg-[#030509] border border-white/10 select-none shadow-[0_20px_60px_rgba(0,0,0,0.8)] ${className}`}
       style={{
-        perspective: `${perspective}px`,
-        perspectiveOrigin: "50% 50%"
+        perspective: `${perspective}px`
       }}
     >
-      {/* 3D Scene Container */}
+      {/* Background ambient lighting */}
+      <div 
+        className="pointer-events-none absolute inset-0 bg-radial from-cyan-950/20 via-transparent to-black"
+        style={{
+          transform: `translate3d(${mousePos.x * -15}px, ${mousePos.y * -15}px, 0)`
+        }}
+      />
+
+      {/* Grid Guide Overlay (Subtle Awwwards aesthetic) */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+
+      {/* Stage Hint & Controls */}
+      <div className="absolute top-4 left-6 z-20 flex items-center gap-3 pointer-events-none">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest text-cyan-400 bg-cyan-950/50 border border-cyan-500/20 backdrop-blur-md">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+          3D PARALLAX CANVAS • {cardList.length} CAPTURES
+        </span>
+        <span className="hidden sm:inline-block text-[11px] font-mono text-gray-400">
+          Move cursor to steer parallax • Click image to elevate
+        </span>
+      </div>
+
+      {/* Backdrop Dimmer when a card is elevated */}
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-transform ease-out"
+        onClick={() => setActiveCardIndex(null)}
+        className={`absolute inset-0 z-30 transition-all duration-500 backdrop-blur-sm ${
+          activeCardIndex !== null
+            ? "bg-black/75 opacity-100 pointer-events-auto cursor-pointer"
+            : "bg-transparent opacity-0 pointer-events-none"
+        }`}
+      />
+
+      {/* 3D Spatial Canvas Layer */}
+      <div
+        className="relative w-full h-full"
         style={{
           transformStyle: "preserve-3d",
-          transform: `rotateX(${-mousePos.y * mouseSensitivity * 1.5}deg) rotateY(${mousePos.x * mouseSensitivity * 2}deg)`,
-          transitionDuration: isHovered ? "0.1s" : `${animationDuration}s`
+          transform: `rotateX(${-mousePos.y * mouseSensitivity * 2}deg) rotateY(${mousePos.x * mouseSensitivity * 2.5}deg)`,
+          transition: "transform 0.1s ease-out"
         }}
       >
         {cardList.map((card, index) => {
-          // Calculate depth variations for staggering effect
-          const depthLayer = ((index % 3) + 1) * 15; // 15px, 30px, 45px base z-layer
-          
+          const pos = CARD_POSITIONS[index % CARD_POSITIONS.length];
+          const isElevated = activeCardIndex === index;
+          const isHovered = hoveredCardIndex === index;
+
+          // Multi-layer parallax depth displacement based on mouse movement
+          const parallaxX = mousePos.x * (pos.depth * 0.45);
+          const parallaxY = mousePos.y * (pos.depth * 0.45);
+
+          // Dynamic Z depth: background (-30px) to foreground (+50px)
+          const currentZ = isElevated ? 260 : isHovered ? pos.depth + 30 : pos.depth;
+          const currentScale = isElevated ? 1 : isHovered ? 1.05 : 1;
+          const zIndex = isElevated ? 50 : isHovered ? 40 : pos.depth > 30 ? 25 : pos.depth > 0 ? 15 : 5;
+
           return (
-            <SingleParallaxCard
+            <div
               key={index}
-              card={card}
-              index={index}
-              parentMousePos={mousePos}
-              mouseSensitivity={mouseSensitivity}
-              baseZ={depthLayer}
-              cardHeight={cardHeight}
-              cardWidth={cardWidth}
-              enableDepthFog={enableDepthFog}
-              fogIntensity={fogIntensity}
-              enableMagneticAttraction={enableMagneticAttraction}
-              magneticStrength={magneticStrength}
-              onClick={() => {
-                if (onCardClick) onCardClick(index);
-                setActiveModalIndex(index);
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCardSelect(index);
               }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Lightbox / High-Res Preview Modal */}
-      <AnimatePresence>
-        {activeModalIndex !== null && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/85 backdrop-blur-md"
-            onClick={() => setActiveModalIndex(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative max-w-4xl w-full bg-[#0d121d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
+              onMouseEnter={() => setHoveredCardIndex(index)}
+              onMouseLeave={() => setHoveredCardIndex(null)}
+              className={`absolute transition-all ${
+                isElevated
+                  ? "cursor-default duration-500"
+                  : "cursor-pointer duration-300"
+              }`}
+              style={{
+                top: isElevated ? "50%" : pos.top,
+                left: isElevated ? "50%" : pos.left,
+                width: isElevated ? "min(88vw, 760px)" : pos.width,
+                height: isElevated ? "min(78vh, 560px)" : pos.height,
+                transformStyle: "preserve-3d",
+                transform: isElevated
+                  ? "translate(-50%, -50%) translateZ(280px) scale(1)"
+                  : `translate3d(${parallaxX}px, ${parallaxY}px, ${currentZ}px) rotateZ(${pos.rotateZ}deg) scale(${currentScale})`,
+                zIndex,
+                transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)"
+              }}
             >
-              {/* Header Bar */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/40">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs font-bold text-emerald-400 uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20">
-                    {cardList[activeModalIndex].event || "Tech Yuva Archives"}
-                  </span>
-                  <span className="text-xs text-gray-400 font-mono">
-                    {activeModalIndex + 1} / {cardList.length}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveModalIndex(null)}
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-                  aria-label="Close modal"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Main Image Container */}
-              <div className="relative w-full max-h-[65vh] flex items-center justify-center bg-black/60 overflow-hidden">
+              {/* Card Container (Double-bezel hardware styling) */}
+              <div
+                className={`relative w-full h-full rounded-2xl overflow-hidden border transition-all duration-300 ${
+                  isElevated
+                    ? "border-cyan-400/80 shadow-[0_25px_70px_rgba(0,210,255,0.35)] ring-2 ring-cyan-400/40"
+                    : isHovered
+                    ? "border-white/40 shadow-[0_15px_35px_rgba(30,144,255,0.25)] ring-1 ring-cyan-400/20"
+                    : "border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+                } bg-[#0b0f19]`}
+              >
+                {/* Photo Image */}
                 <img
-                  src={cardList[activeModalIndex].mediaUrl}
-                  alt={cardList[activeModalIndex].title || "Event Image"}
-                  className="max-h-[65vh] w-auto object-contain select-none"
+                  src={card.mediaUrl}
+                  alt={card.title || `Archive Photo ${index + 1}`}
+                  className={`w-full h-full object-cover select-none transition-all duration-500 ${
+                    isElevated
+                      ? "filter brightness-105 contrast-105"
+                      : isHovered
+                      ? "filter brightness-100 contrast-100 scale-105"
+                      : "filter brightness-90 contrast-[1.05]"
+                  }`}
                   loading="lazy"
                 />
 
-                {/* Left Navigation */}
-                <button
-                  type="button"
-                  onClick={() =>
-                    setActiveModalIndex((prev) =>
-                      prev !== null ? (prev > 0 ? prev - 1 : cardList.length - 1) : null
-                    )
-                  }
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-black/90 border border-white/10 text-white backdrop-blur transition-all shadow-lg"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
+                {/* Ambient dynamic sheen glare */}
+                <div
+                  className="pointer-events-none absolute inset-0 mix-blend-overlay transition-opacity duration-300"
+                  style={{
+                    opacity: isElevated ? 0.2 : isHovered ? 0.35 : 0.05,
+                    background: `radial-gradient(circle at ${50 + mousePos.x * 30}% ${50 + mousePos.y * 30}%, rgba(255,255,255,0.7) 0%, transparent 60%)`
+                  }}
+                />
 
-                {/* Right Navigation */}
-                <button
-                  type="button"
-                  onClick={() =>
-                    setActiveModalIndex((prev) =>
-                      prev !== null ? (prev < cardList.length - 1 ? prev + 1 : 0) : null
-                    )
-                  }
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/60 hover:bg-black/90 border border-white/10 text-white backdrop-blur transition-all shadow-lg"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
+                {/* Gradient vignette */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300 ${
+                    isElevated ? "opacity-100" : isHovered ? "opacity-80" : "opacity-60"
+                  }`}
+                />
 
-              {/* Footer Details */}
-              <div className="p-6 bg-gradient-to-b from-[#0d121d] to-[#0a0e17] space-y-2 border-t border-white/5">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="text-lg font-display uppercase tracking-tight text-white font-bold">
-                    {cardList[activeModalIndex].title}
-                  </h3>
-                  {cardList[activeModalIndex].statValue && (
-                    <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded border border-cyan-500/20">
-                      {cardList[activeModalIndex].statLabel || "IMPACT"}: {cardList[activeModalIndex].statValue}
+                {/* Floating Badge (Top Left) */}
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10">
+                  <span className="font-mono text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-cyan-300">
+                    {card.event || "Tech Yuva"}
+                  </span>
+                  {card.statValue && (
+                    <span className="hidden sm:inline-block font-mono text-[9px] text-emerald-400 font-semibold px-1.5 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-emerald-500/30">
+                      {card.statValue}
                     </span>
                   )}
                 </div>
-                {cardList[activeModalIndex].highlightText && (
-                  <p className="text-xs text-gray-400 font-sans leading-relaxed">
-                    {cardList[activeModalIndex].highlightText}
-                  </p>
+
+                {/* Elevated Close / Minimize Button */}
+                {isElevated ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveCardIndex(null);
+                    }}
+                    className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/80 hover:bg-black border border-white/20 text-white hover:text-cyan-400 transition-colors shadow-lg"
+                    aria-label="Minimize image"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <div className="absolute top-3 right-3 z-10 p-1 rounded-full bg-black/50 text-white/70 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ZoomIn className="w-3.5 h-3.5" />
+                  </div>
                 )}
+
+                {/* Metadata Details at Bottom */}
+                <div
+                  className={`absolute inset-x-0 bottom-0 p-4 flex flex-col gap-1 transition-all duration-300 ${
+                    isElevated
+                      ? "opacity-100 translate-y-0"
+                      : isHovered
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-2 pointer-events-none"
+                  }`}
+                >
+                  <h4 className="font-display text-sm sm:text-base font-bold text-white uppercase tracking-tight line-clamp-1">
+                    {card.title}
+                  </h4>
+                  {card.highlightText && (
+                    <p className="text-[11px] sm:text-xs text-gray-300 font-sans leading-relaxed line-clamp-2">
+                      {card.highlightText}
+                    </p>
+                  )}
+                  {isElevated && (
+                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-cyan-400">
+                      <span>Click background or close to return</span>
+                      <span>Capture {index + 1} / {cardList.length}</span>
+                    </div>
+                  )}
+                </div>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-interface SingleCardProps {
-  card: ParallaxCardItem;
-  index: number;
-  parentMousePos: { x: number; y: number };
-  mouseSensitivity: number;
-  baseZ: number;
-  cardHeight: number | string;
-  cardWidth?: number | string;
-  enableDepthFog: boolean;
-  fogIntensity: number;
-  enableMagneticAttraction: boolean;
-  magneticStrength: number;
-  onClick: () => void;
-}
-
-const SingleParallaxCard: React.FC<SingleCardProps> = ({
-  card,
-  parentMousePos,
-  mouseSensitivity,
-  baseZ,
-  cardHeight,
-  cardWidth,
-  enableDepthFog,
-  fogIntensity,
-  enableMagneticAttraction,
-  magneticStrength,
-  onClick
-}) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [localHover, setLocalHover] = useState(false);
-  const [localMouse, setLocalMouse] = useState({ x: 0, y: 0 }); // relative to this card center
-
-  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-    setLocalMouse({
-      x: Math.max(-1, Math.min(1, x)),
-      y: Math.max(-1, Math.min(1, y))
-    });
-  };
-
-  const handleCardMouseLeave = () => {
-    setLocalHover(false);
-    setLocalMouse({ x: 0, y: 0 });
-  };
-
-  // 3D rotations combining parent scene and local hover tilt
-  const rotateX = localHover
-    ? -localMouse.y * 12
-    : -parentMousePos.y * mouseSensitivity * 1.8;
-  const rotateY = localHover
-    ? localMouse.x * 12
-    : parentMousePos.x * mouseSensitivity * 1.8;
-
-  // Layered translation
-  const translateZ = localHover ? baseZ + 35 : baseZ;
-
-  // Optional magnetic pull towards mouse
-  const magX = enableMagneticAttraction && localHover ? localMouse.x * magneticStrength : 0;
-  const magY = enableMagneticAttraction && localHover ? localMouse.y * magneticStrength : 0;
-
-  // Glare position calculation
-  const glareX = 50 + localMouse.x * 40;
-  const glareY = 50 + localMouse.y * 40;
-
-  // Depth fog calculation
-  const fogOpacity = enableDepthFog
-    ? Math.max(0, Math.min(0.6, (1 - (baseZ / 60)) * 0.3 * fogIntensity))
-    : 0;
-
-  return (
-    <div
-      ref={cardRef}
-      onMouseMove={handleCardMouseMove}
-      onMouseEnter={() => setLocalHover(true)}
-      onMouseLeave={handleCardMouseLeave}
-      onClick={onClick}
-      className="group relative cursor-pointer select-none rounded-xl transition-all duration-300"
-      style={{
-        transformStyle: "preserve-3d",
-        transform: `translate3d(${magX}px, ${magY}px, ${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-        height: typeof cardHeight === "number" ? `${cardHeight}px` : cardHeight,
-        width: cardWidth ? (typeof cardWidth === "number" ? `${cardWidth}px` : cardWidth) : "100%",
-        willChange: "transform"
-      }}
-    >
-      {/* Outer Card Frame / Glass container */}
-      <div className="relative w-full h-full rounded-xl overflow-hidden border border-white/10 bg-[#0f1422] shadow-[0_15px_35px_rgba(0,0,0,0.5)] group-hover:border-cyan-500/40 group-hover:shadow-[0_20px_45px_rgba(30,144,255,0.2)] transition-all duration-300">
-        
-        {/* Layer 1: Image Canvas with subtle zoom and parallax */}
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: `translateZ(10px) scale(${localHover ? 1.08 : 1.02})`,
-            transition: "transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)"
-          }}
-        >
-          <img
-            src={card.mediaUrl}
-            alt={card.title || "Gallery"}
-            className="w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.05] group-hover:brightness-100 transition-all duration-500"
-            loading="lazy"
-          />
-        </div>
-
-        {/* Dynamic Glare Reflection Layer */}
-        <div
-          className="pointer-events-none absolute inset-0 mix-blend-overlay transition-opacity duration-300"
-          style={{
-            opacity: localHover ? 0.45 : 0.1,
-            background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.0) 65%)`
-          }}
-        />
-
-        {/* Dark Vignette / Gradient Mask */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
-
-        {/* Optional Depth Fog */}
-        {enableDepthFog && fogOpacity > 0 && (
-          <div
-            className="absolute inset-0 bg-slate-950 pointer-events-none transition-opacity duration-300"
-            style={{ opacity: fogOpacity }}
-          />
-        )}
-
-        {/* Layer 2: Floating Event Badge (Top-Left) */}
-        <div
-          className="absolute top-3 left-3 flex items-center gap-2"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: "translateZ(30px)",
-            transition: "transform 0.3s ease-out"
-          }}
-        >
-          <span className="font-mono text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-cyan-400">
-            {card.event || "Event Log"}
-          </span>
-        </div>
-
-        {/* Layer 3: Floating Expand Action Icon (Top-Right) */}
-        <div
-          className="absolute top-3 right-3 p-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white/70 group-hover:text-cyan-400 group-hover:border-cyan-500/30 group-hover:bg-black/70 transition-all duration-300"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: "translateZ(25px)"
-          }}
-        >
-          <Maximize2 className="w-3.5 h-3.5" />
-        </div>
-
-        {/* Layer 4: Content Overlay at Bottom */}
-        <div
-          className="absolute inset-x-0 bottom-0 p-4 flex flex-col gap-1.5 pointer-events-none"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: "translateZ(35px)",
-            transition: "transform 0.3s ease-out"
-          }}
-        >
-          <div className="flex items-center justify-between">
-            <h4 className="font-display text-sm font-bold text-white uppercase tracking-tight line-clamp-1 group-hover:text-cyan-300 transition-colors">
-              {card.title}
-            </h4>
-            {card.statValue && (
-              <span className="font-mono text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap">
-                {card.statValue}
-              </span>
-            )}
-          </div>
-
-          {card.highlightText && (
-            <p className="text-[11px] text-gray-300/90 font-sans line-clamp-2 leading-relaxed opacity-85 group-hover:opacity-100 transition-opacity">
-              {card.highlightText}
-            </p>
-          )}
-
-          {/* Interactive instruction line on hover */}
-          <div className="flex items-center gap-1 text-[10px] font-mono text-cyan-400/80 pt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <span>Click to inspect</span>
-            <ExternalLink className="w-2.5 h-2.5" />
-          </div>
-        </div>
-
+            </div>
+          );
+        })}
       </div>
     </div>
   );
