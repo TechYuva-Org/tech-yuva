@@ -197,22 +197,27 @@ export default function EventDetailPage({ event, onBack }: EventDetailPageProps)
               </div>
             </div>
 
-            {/* Registration Card (Directly adheres to instruction: no invented link, exact status display) */}
+            {/* Registration Card */}
             <div className="p-4 rounded-xl border border-[#00BFFF]/25 bg-gradient-to-r from-[#00BFFF]/10 via-[#0A192F]/40 to-transparent flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-xs font-mono uppercase font-bold text-[#00BFFF]">
-                  <Lock className="w-3.5 h-3.5" />
-                  <span>REGISTRATION DESK</span>
+                  <Shield className="w-3.5 h-3.5 text-[#00BFFF]" />
+                  <span>REGISTRATION DESK ACTIVE</span>
                 </div>
                 <p className="text-xs text-[#E5E7EB] font-sans">
-                  {regMessage}
+                  Official Google Form registration is open. Secure your workshop pass now.
                 </p>
               </div>
 
               <div className="shrink-0 flex items-center">
-                <div className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-white/5 border border-white/15 text-xs font-mono uppercase font-bold text-[#9CA3AF] tracking-wider text-center cursor-not-allowed select-none">
-                  {regMessage}
-                </div>
+                <a
+                  href={event.externalLink || "https://docs.google.com/forms/d/e/1FAIpQLSdbSMHXwTHOOgAwZzKoWrhFbvbc__MyOve3Ik50tIhFepz2Iw/viewform?usp=dialog"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-[#1E90FF]/20 border border-[#1E90FF]/40 text-xs font-mono uppercase font-bold text-white tracking-widest text-center shadow-[0_0_15px_rgba(30,144,255,0.3)] hover:bg-[#1E90FF]/30 transition-all cursor-pointer inline-block"
+                >
+                  SECURE PASS ↗
+                </a>
               </div>
             </div>
 

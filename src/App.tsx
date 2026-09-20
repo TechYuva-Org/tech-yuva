@@ -759,12 +759,19 @@ export default function App() {
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleViewEventDetail((evt.metadata as any)?.slug || evt.id)}
+                          className="px-3.5 py-2 bg-[#00BFFF]/10 backdrop-blur-xl border border-[#00BFFF]/30 hover:bg-[#00BFFF]/20 text-[#00BFFF] text-xs font-mono font-bold uppercase tracking-widest rounded-lg transition-all cursor-pointer"
+                        >
+                          VIEW DETAILS
+                        </button>
                         <a
                           href={evt.externalLink || "https://docs.google.com/forms/d/e/1FAIpQLSdbSMHXwTHOOgAwZzKoWrhFbvbc__MyOve3Ik50tIhFepz2Iw/viewform?usp=dialog"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-5 py-2 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer inline-block text-center"
+                          className="px-4 py-2 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer inline-block text-center"
                         >
                           SECURE PASS
                         </a>
