@@ -13,6 +13,7 @@ export const UPCOMING_EVENTS: EventItem[] = [
     description: "Explore the evolving world of cyber threats and learn how intelligence and technology work together to build a safer digital future.",
     status: "upcoming",
     spotsLeft: 100,
+    externalLink: "https://docs.google.com/forms/d/e/1FAIpQLSdbSMHXwTHOOgAwZzKoWrhFbvbc__MyOve3Ik50tIhFepz2Iw/viewform?usp=dialog",
     featured: true,
     image: "/cyber-defense-poster.jpg",
     metadata: {

@@ -77,6 +77,7 @@ export default function App() {
   // Modal states
   const [selectedEventForReg, setSelectedEventForReg] = useState<EventItem | null>(null);
   const [selectedPosterUrl, setSelectedPosterUrl] = useState<string | null>(null);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
   // Dynamic Full-Stack Registry Queries
   const { data: dbEvents = UPCOMING_EVENTS } = useQuery({
@@ -758,36 +759,15 @@ export default function App() {
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="font-mono text-[10px] text-secondary-text">
-                          Seats Remaining: <span className="text-saffron font-bold text-xs">{evt.spotsLeft !== undefined ? evt.spotsLeft : 25}</span>
-                        </div>
-                        {evt.externalLink ? (
-                          <a
-                            href={evt.externalLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-1.5 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer inline-block text-center"
-                          >
-                            SECURE PASS
-                          </a>
-                        ) : (evt.metadata as any)?.registrationOpen === false ? (
-                          <button
-                            type="button"
-                            onClick={() => handleViewEventDetail((evt.metadata as any)?.slug || evt.id)}
-                            className="px-4 py-1.5 bg-[#00BFFF]/10 backdrop-blur-xl border border-[#00BFFF]/30 hover:bg-[#00BFFF]/20 text-[#00BFFF] text-xs font-mono font-bold uppercase tracking-widest rounded-lg transition-all cursor-pointer"
-                          >
-                            VIEW DETAILS
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => setSelectedEventForReg(evt)}
-                            className="px-4 py-1.5 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer"
-                          >
-                            SECURE PASS
-                          </button>
-                        )}
+                      <div className="flex items-center justify-end gap-2">
+                        <a
+                          href={evt.externalLink || "https://docs.google.com/forms/d/e/1FAIpQLSdbSMHXwTHOOgAwZzKoWrhFbvbc__MyOve3Ik50tIhFepz2Iw/viewform?usp=dialog"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-5 py-2 bg-[#1E90FF]/20 backdrop-blur-xl border border-[#1E90FF]/40 hover:bg-[#1E90FF]/30 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-lg shadow-[0_0_15px_rgba(30,144,255,0.3)] transition-all cursor-pointer inline-block text-center"
+                        >
+                          SECURE PASS
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -1321,6 +1301,7 @@ export default function App() {
               <li><button onClick={() => scrollToSection(mainOffersRef)} className="hover:text-text-primary transition-colors cursor-pointer text-left">Developer Offerings</button></li>
               <li><button onClick={() => scrollToSection(mainEventsRef)} className="hover:text-text-primary transition-colors cursor-pointer text-left">Upcoming Events</button></li>
               <li><button onClick={() => scrollToSection(mainGalleryRef)} className="hover:text-text-primary transition-colors cursor-pointer text-left">Historic Logs</button></li>
+              <li><button onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-text-primary transition-colors cursor-pointer text-left text-cyan-400">Privacy Policy</button></li>
             </ul>
           </div>
 
@@ -1339,7 +1320,7 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px]">
-          <p>© 2026 Tech Yuva Guild Council. All rights secured internationally.</p>
+          <p>© 2026 Tech Yuva Guild Council. All rights secured internationally. • <button onClick={() => setIsPrivacyModalOpen(true)} className="hover:text-text-primary text-cyan-400 underline cursor-pointer">Privacy Policy</button></p>
           <div className="flex items-center gap-4 text-text-secondary">
             <a href="https://www.instagram.com/techyuva_/" target="_blank" rel="noreferrer" className="hover:text-text-primary transition-colors flex items-center gap-1"><Instagram className="w-3.5 h-3.5" /> Follow us on Instagram</a>
             <span className="text-border-color">|</span>
@@ -1364,6 +1345,32 @@ export default function App() {
         isOpen={selectedCertificate !== null}
         onClose={() => setSelectedCertificate(null)}
       />
+
+      {/* PRIVACY POLICY MODAL */}
+      {isPrivacyModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setIsPrivacyModalOpen(false)}>
+          <div className="bg-[#0c0f13] border border-[#1E90FF]/30 p-6 md:p-8 rounded-xl shadow-[0_0_50px_rgba(30,144,255,0.15)] max-w-xl w-full max-h-[85vh] overflow-y-auto space-y-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h2 className="text-lg font-bold font-display uppercase text-text-primary">Privacy Policy • Tech Yuva</h2>
+              <button onClick={() => setIsPrivacyModalOpen(false)} className="text-gray-400 hover:text-white text-xs font-mono">✕ Close</button>
+            </div>
+            <div className="text-xs text-secondary-text font-mono leading-relaxed space-y-3">
+              <p>Tech Yuva ("we", "our", or "us") is committed to protecting your privacy and developer data integrity.</p>
+              <h4 className="text-white font-bold uppercase text-[11px] pt-1">1. Information We Collect</h4>
+              <p>We collect minimal information required for event participation, developer pass issuance, and community engagement—specifically name, email address, GitHub handle, and organization/institute name.</p>
+              <h4 className="text-white font-bold uppercase text-[11px] pt-1">2. How Information Is Used</h4>
+              <p>Your details are strictly used to coordinate workshops, issue verified digital certificates, send event updates, and verify hackathon check-ins.</p>
+              <h4 className="text-white font-bold uppercase text-[11px] pt-1">3. Data Protection & Sharing</h4>
+              <p>We do NOT sell, rent, or trade student or member data to third-party advertisers. Data stored in our database is protected using industry-standard encryption and security protocols.</p>
+              <h4 className="text-white font-bold uppercase text-[11px] pt-1">4. Contact Seat</h4>
+              <p>For privacy inquiries or data removal requests, contact the Lead Architect seat at <span className="text-[#00BFFF]">techyuva.org@gmail.com</span>.</p>
+            </div>
+            <div className="pt-2 flex justify-end">
+              <button onClick={() => setIsPrivacyModalOpen(false)} className="px-5 py-2 bg-[#1E90FF]/20 border border-[#1E90FF]/40 text-[#00BFFF] text-xs font-bold uppercase rounded-lg hover:bg-[#1E90FF]/30 transition-all cursor-pointer">Acknowledge</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* LOGIN MODAL */}
       {isLoginModalOpen && (

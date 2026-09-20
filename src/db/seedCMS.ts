@@ -30,6 +30,7 @@ export async function seedDefaultEvents() {
       description: "Explore the evolving world of cyber threats and learn how intelligence and technology work together to build a safer digital future.",
       status: "upcoming" as const,
       image: "/cyber-defense-poster.jpg",
+      externalLink: "https://docs.google.com/forms/d/e/1FAIpQLSdbSMHXwTHOOgAwZzKoWrhFbvbc__MyOve3Ik50tIhFepz2Iw/viewform?usp=dialog",
       spotsTotal: 100,
       spotsLeft: 100,
       featured: true,
@@ -70,6 +71,7 @@ export async function seedDefaultEvents() {
         description: cyberEvent.description,
         status: cyberEvent.status,
         image: cyberEvent.image,
+        externalLink: cyberEvent.externalLink,
         metadata: cyberEvent.metadata,
         featured: cyberEvent.featured
       }

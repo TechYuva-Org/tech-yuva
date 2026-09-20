@@ -55,10 +55,10 @@ console.log("Your journey starts here 🚀");`;
 
     // Sequence execution simulation
     const logs = [
-      "⚡ Initializing Vercel Edge Node...",
-      "🔍 Resolving dependencies from package.json...",
-      "📦 Implemented module structures...",
-      "⚙️ Compiling TypeScript server targets to CommonJS...",
+      "⚡ Initializing Tech Yuva Core...",
+      "🔍 Connecting Developer Network...",
+      "📦 Syncing Innovation Engine...",
+      "⚙️ Compiling Cyber Intelligence & Defense modules...",
       "✅ Execution success in 143ms."
     ];
 
@@ -69,7 +69,7 @@ console.log("Your journey starts here 🚀");`;
         currentLogIdx++;
       } else {
         clearInterval(logInterval);
-        setOutputResult("⚡ Initialized Tech Yuva Ecosystem.\n🚀 Real Projects • Hackathons • Startup Culture\n✨ Welcome to the Community!");
+        setOutputResult("⚡ Initialized Tech Yuva Ecosystem.\n🚀 Workshops • Cyber Security • Hackathons • Startup Culture\n✨ Welcome to the Community!");
         setIsRunning(false);
         setExecutionLine(-1);
         setDisplayTitle("WHERE YOUTH MEET TO BUILD FUTURE TECH");
