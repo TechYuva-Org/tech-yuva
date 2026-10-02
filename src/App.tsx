@@ -691,7 +691,12 @@ export default function App() {
           {/* TAB CONTENT 1: UPCOMING EXPEDITIONS GRID (VISITOR SIGHT) */}
           {activeTab === "upcoming" && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
-              {dbEvents.filter(e => e.status !== "past" && (e.status === "upcoming" || e.status === "active" || !e.status)).map((evt) => (
+              {dbEvents.filter(e => {
+                if (e.status === "past") return false;
+                // hide events whose date has already passed
+                if (e.date && new Date(e.date) < new Date(new Date().setHours(0,0,0,0))) return false;
+                return e.status === "upcoming" || e.status === "active" || !e.status;
+              }).map((evt) => (
                 <div 
                   key={evt.id} 
                   className="relative rounded-xl border border-white/10 bg-[#0F1115]/50 overflow-hidden flex flex-col justify-between glass-panel hover:border-white/20 transition-all group"
