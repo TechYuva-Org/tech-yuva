@@ -111,11 +111,6 @@ console.log("Your journey starts here 🚀");`;
 
       {/* Hero Left Column: Brand Pitch */}
       <div className="lg:col-span-6 space-y-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-mono">
-          <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#00BFFF]">{badgeText}</span>
-        </div>
-
         <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-sans font-black leading-[0.9] uppercase tracking-tighter italic text-white transition-all duration-700">
           {displayTitle.toLowerCase().includes("build future tech") ? (
             <>Where Youth Meet To <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E90FF] to-[#00BFFF] inline-block pr-3.5 pb-1">Build Future Tech</span></>

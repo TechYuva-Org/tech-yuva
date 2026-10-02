@@ -1,6 +1,8 @@
 import { EventItem, GalleryItem, Sponsor, Testimonial } from "./types";
 
-export const UPCOMING_EVENTS: EventItem[] = [
+export const UPCOMING_EVENTS: EventItem[] = [];
+
+export const PAST_EVENTS: EventItem[] = [
   {
     id: "cyber-intelligence-digital-defense",
     title: "Cyber Intelligence & Digital Defense",
@@ -11,8 +13,7 @@ export const UPCOMING_EVENTS: EventItem[] = [
     venue: "Auditorium, IMS Ghaziabad University Courses Campus (IMSUC), Ghaziabad",
     tags: ["Workshop", "Cybersecurity", "Digital Defense", "Intelligence"],
     description: "Explore the evolving world of cyber threats and learn how intelligence and technology work together to build a safer digital future.",
-    status: "upcoming",
-    spotsLeft: 100,
+    status: "past",
     externalLink: "https://docs.google.com/forms/d/e/1FAIpQLSdbSMHXwTHOOgAwZzKoWrhFbvbc__MyOve3Ik50tIhFepz2Iw/viewform?usp=dialog",
     featured: true,
     image: "/cyber-defense-poster.jpg",
@@ -36,12 +37,9 @@ export const UPCOMING_EVENTS: EventItem[] = [
       ],
       closingMessage: "Because Digital Security Is a Shared Responsibility.",
       registrationOpen: false,
-      registrationMessage: "Registration details coming soon"
+      registrationMessage: "Event concluded"
     }
-  }
-];
-
-export const PAST_EVENTS: EventItem[] = [
+  },
   {
     id: "drop-hack-26",
     title: "DROP HACK'26",

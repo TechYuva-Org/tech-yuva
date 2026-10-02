@@ -18,16 +18,10 @@ export default function TechYuvaLogo({
       className={`relative inline-flex items-center justify-center select-none cursor-pointer transition-transform duration-300 transform hover:scale-105 rounded-full ${className}`}
       style={{ width: dimension, height: dimension, backgroundColor: "transparent" }}
     >
-      {/* Circular atmospheric ambient glow */}
-      {animated && (
-        <div className="absolute inset-0 rounded-full bg-[#1E90FF]/20 blur-md opacity-60 hover:opacity-80 transition-opacity duration-300 pointer-events-none" />
-      )}
+
       
-      {/* Seamless circular mask (no black border, transparent canvas) */}
-      <div 
-        className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center pointer-events-none bg-transparent"
-        style={{ mixBlendMode: "screen", backgroundColor: "transparent" }}
-      >
+      {/* Transparent logo canvas */}
+      <div className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center pointer-events-none bg-transparent">
         <img
           src="/tech-yuva-logo.png"
           alt="Tech Yuva"

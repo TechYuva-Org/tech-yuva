@@ -358,45 +358,12 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                       />
                     )}
 
-                    {/* Gradient Darkening Mask */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent" />
-
-                    {/* Top Floating Badge */}
-                    <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10">
-                      <span className="font-mono text-[9px] sm:text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-cyan-300">
-                        {card.event || "Tech Yuva"}
-                      </span>
-                      {card.statValue && (
-                        <span className="font-mono text-[9px] sm:text-[10px] text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-emerald-500/30">
-                          {card.statValue}
-                        </span>
-                      )}
-                    </div>
-
                     {/* Zoom Icon Hint on Center Card */}
                     {isCenter && (
                       <div className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-cyan-300 opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all">
                         <Maximize2 className="w-3.5 h-3.5" />
                       </div>
                     )}
-
-                    {/* Content Details at Bottom */}
-                    <div className="absolute inset-x-0 bottom-0 p-3.5 sm:p-5 flex flex-col gap-1 z-10">
-                      <h4 className="font-display text-sm sm:text-base md:text-lg font-bold text-white uppercase tracking-tight line-clamp-1 group-hover:text-cyan-300 transition-colors">
-                        {card.title}
-                      </h4>
-                      {card.highlightText && (
-                        <p className="text-[11px] sm:text-xs text-gray-300 font-sans leading-relaxed line-clamp-2">
-                          {card.highlightText}
-                        </p>
-                      )}
-                      {isCenter && (
-                        <div className="flex items-center justify-between pt-1 text-[10px] sm:text-[11px] font-mono text-cyan-400">
-                          <span>Tap card to view in crisp high-res</span>
-                          <span>Capture {index + 1} of {cardList.length}</span>
-                        </div>
-                      )}
-                    </div>
                   </div>
                 </div>
               );
@@ -448,25 +415,10 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                 role="img"
                 aria-label={card.title || `Capture ${index + 1}`}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-              <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
-                <span className="font-mono text-[9px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-cyan-300">
-                  {card.event || "Tech Yuva"}
-                </span>
-              </div>
               <div className="absolute top-3 right-3 z-10 p-1.5 rounded-full bg-black/60 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Maximize2 className="w-3.5 h-3.5" />
               </div>
-              <div className="absolute inset-x-0 bottom-0 p-4 z-10">
-                <h4 className="font-display text-sm font-bold text-white uppercase tracking-tight line-clamp-1 group-hover:text-cyan-300 transition-colors">
-                  {card.title}
-                </h4>
-                {card.highlightText && (
-                  <p className="text-[11px] text-gray-300 font-sans line-clamp-2 mt-0.5">
-                    {card.highlightText}
-                  </p>
-                )}
-              </div>
+            </div>
             </div>
           ))}
         </div>
@@ -544,24 +496,7 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                 </button>
               </div>
 
-              {/* Modal Details Footer */}
-              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-[#080c14] border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-                <div className="space-y-0.5">
-                  <h3 className="text-sm sm:text-base md:text-lg font-display uppercase tracking-tight text-white font-bold">
-                    {cardList[activeModalIndex].title}
-                  </h3>
-                  {cardList[activeModalIndex].highlightText && (
-                    <p className="text-[11px] sm:text-xs text-gray-300 font-sans leading-relaxed max-w-3xl">
-                      {cardList[activeModalIndex].highlightText}
-                    </p>
-                  )}
-                </div>
-                {cardList[activeModalIndex].statValue && (
-                  <div className="shrink-0 font-mono text-[10px] sm:text-xs font-bold text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-xl border border-emerald-500/30 w-fit">
-                    {cardList[activeModalIndex].statLabel || "METRIC"}: {cardList[activeModalIndex].statValue}
-                  </div>
-                )}
-              </div>
+
             </motion.div>
           </div>
         )}

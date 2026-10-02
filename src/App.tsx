@@ -349,7 +349,7 @@ export default function App() {
             <div className="flex justify-center mb-8">
               <TechYuvaLogo size={260} className="hover:scale-105 transition-transform duration-500 cursor-pointer" />
             </div>
-            <span className="text-xs font-mono text-neon-blue uppercase tracking-[0.2em] font-semibold block">COHORT PRINCIPLES</span>
+            
             <h2 className="text-3xl md:text-4xl font-display uppercase tracking-tight text-text-primary font-bold">
               THE NEXT GENERATION DEVELOPMENT HUB
             </h2>
@@ -691,7 +691,7 @@ export default function App() {
           {/* TAB CONTENT 1: UPCOMING EXPEDITIONS GRID (VISITOR SIGHT) */}
           {activeTab === "upcoming" && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in">
-              {dbEvents.filter(e => e.status === "upcoming" || e.status === "active" || !e.status).map((evt) => (
+              {dbEvents.filter(e => e.status !== "past" && (e.status === "upcoming" || e.status === "active" || !e.status)).map((evt) => (
                 <div 
                   key={evt.id} 
                   className="relative rounded-xl border border-white/10 bg-[#0F1115]/50 overflow-hidden flex flex-col justify-between glass-panel hover:border-white/20 transition-all group"
