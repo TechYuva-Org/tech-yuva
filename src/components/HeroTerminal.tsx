@@ -20,7 +20,7 @@ export default function HeroTerminal({ onExplore, onScrollToEvents, cmsHero, isR
   const [displayTitle, setDisplayTitle] = useState("TECH YUVA");
 
   // Derive dynamic strings
-  const badgeText = cmsHero?.badge || "ADMISSION OPEN • NEW COHORT 2026";
+  const badgeText = cmsHero?.badge?.replace("ADMISSION OPEN • ", "").replace("ADMISSION OPEN - ", "").replace("ADMISSION OPEN", "").trim() || "COHORT 2026 ACTIVE";
   const descriptionText = cmsHero?.description || "Empowering the next generation of builders through AI, Web3, and high-performance startup culture.";
   const button1Text = cmsHero?.ctaButton1Text || "JOIN COMMUNITY";
 
@@ -154,7 +154,7 @@ console.log("Your journey starts here 🚀");`;
               <span className="w-3 h-3 rounded-full bg-[#FF5F56] inline-block" />
               <span className="w-3 h-3 rounded-full bg-[#FFBD2E] inline-block" />
               <span className="w-3 h-3 rounded-full bg-[#27C93F] inline-block" />
-              <span className="text-[10px] font-mono text-gray-500 ml-2 tracking-wider uppercase">tech-yuva-core.js</span>
+              <span className="text-[10px] font-mono text-gray-500 ml-2 tracking-wider uppercase">tech-yuva-core</span>
             </div>
             
             <div className="flex items-center gap-3">

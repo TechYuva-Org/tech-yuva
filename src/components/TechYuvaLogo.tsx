@@ -15,25 +15,25 @@ export default function TechYuvaLogo({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center select-none cursor-pointer group transition-all duration-300 transform hover:scale-105 rounded-full ${className}`}
-      style={{ width: dimension, height: dimension }}
+      className={`relative inline-flex items-center justify-center select-none cursor-pointer transition-transform duration-300 transform hover:scale-105 rounded-full ${className}`}
+      style={{ width: dimension, height: dimension, backgroundColor: "transparent" }}
     >
       {/* Circular atmospheric ambient glow */}
       {animated && (
-        <div className="absolute inset-0 rounded-full bg-[#1E90FF]/25 blur-lg opacity-70 group-hover:opacity-100 group-hover:bg-[#1E90FF]/40 transition-all duration-500 pointer-events-none" />
+        <div className="absolute inset-0 rounded-full bg-[#1E90FF]/20 blur-md opacity-60 hover:opacity-80 transition-opacity duration-300 pointer-events-none" />
       )}
       
-      {/* Seamless circular mask with screen blend mode (no square box, no black border) */}
+      {/* Seamless circular mask (no black border, transparent canvas) */}
       <div 
-        className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center pointer-events-none"
-        style={{ mixBlendMode: "screen" }}
+        className="relative w-full h-full rounded-full overflow-hidden flex items-center justify-center pointer-events-none bg-transparent"
+        style={{ mixBlendMode: "screen", backgroundColor: "transparent" }}
       >
         <img
           src="/tech-yuva-logo.png"
           alt="Tech Yuva"
           draggable={false}
           className="w-full h-full object-cover scale-[1.04]"
-          style={{ display: "block" }}
+          style={{ display: "block", backgroundColor: "transparent" }}
         />
       </div>
     </div>
