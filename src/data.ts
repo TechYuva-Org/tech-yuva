@@ -157,6 +157,56 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     mediaType: "image",
     mediaUrl: "/Images/gallery-10.jpeg",
     highlightText: "Peer-to-peer coding sessions breaking down full-stack pipelines, database schemas, and AI application workflows."
+  },
+  {
+    id: "gal-cyber-workshop-11",
+    title: "Cyber Intelligence Workshop",
+    event: "Workshop Sprint",
+    statLabel: "EVENT",
+    statValue: "Sep 2026",
+    mediaType: "image",
+    mediaUrl: "/Images/gallery-11.jpeg",
+    highlightText: "Cyber Intelligence & Digital Defense workshop hosted at IMS Ghaziabad."
+  },
+  {
+    id: "gal-cyber-workshop-12",
+    title: "Cyber Intelligence Workshop",
+    event: "Workshop Sprint",
+    statLabel: "EVENT",
+    statValue: "Sep 2026",
+    mediaType: "image",
+    mediaUrl: "/Images/gallery-12.jpeg",
+    highlightText: "Cyber Intelligence & Digital Defense workshop hosted at IMS Ghaziabad."
+  },
+  {
+    id: "gal-cyber-workshop-13",
+    title: "Cyber Intelligence Workshop",
+    event: "Workshop Sprint",
+    statLabel: "EVENT",
+    statValue: "Sep 2026",
+    mediaType: "image",
+    mediaUrl: "/Images/gallery-13.jpeg",
+    highlightText: "Cyber Intelligence & Digital Defense workshop hosted at IMS Ghaziabad."
+  },
+  {
+    id: "gal-cyber-workshop-14",
+    title: "Cyber Intelligence Workshop",
+    event: "Workshop Sprint",
+    statLabel: "EVENT",
+    statValue: "Sep 2026",
+    mediaType: "image",
+    mediaUrl: "/Images/gallery-14.jpeg",
+    highlightText: "Cyber Intelligence & Digital Defense workshop hosted at IMS Ghaziabad."
+  },
+  {
+    id: "gal-cyber-workshop-15",
+    title: "Cyber Intelligence Workshop",
+    event: "Workshop Sprint",
+    statLabel: "EVENT",
+    statValue: "Sep 2026",
+    mediaType: "image",
+    mediaUrl: "/Images/gallery-15.jpeg",
+    highlightText: "Cyber Intelligence & Digital Defense workshop hosted at IMS Ghaziabad."
   }
 ];
 

@@ -957,7 +957,7 @@ export default function App() {
                   ? cmsData.gallery.filter((item: any) => !item.mediaUrl?.includes("unsplash.com"))
                   : GALLERY_ITEMS
               }
-              cardCount={10}
+              cardCount={15}
               perspective={1400}
               mouseSensitivity={2.5}
               className="my-2"
