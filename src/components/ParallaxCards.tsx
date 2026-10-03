@@ -419,7 +419,6 @@ export const ParallaxCards: React.FC<ParallaxCardsProps> = ({
                 <Maximize2 className="w-3.5 h-3.5" />
               </div>
             </div>
-            </div>
           ))}
         </div>
       )}
